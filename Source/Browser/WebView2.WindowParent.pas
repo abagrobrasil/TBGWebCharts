@@ -46,6 +46,25 @@ type
     { True quando CoreWebView2/Controller ja estao prontos pra uso (Navigate,
       ExecuteScript etc). }
     property Ready: Boolean read FReady;
+  published
+    { TCustomControl nao republica nada disso como published - sem essas
+      linhas as propriedades existem (herdadas de TControl/TWinControl) mas
+      nao aparecem no Object Inspector nem podem ser gravadas no .dfm (o
+      "Align" e um caso concreto: sem isto o Delphi acusa a propriedade como
+      inexistente ao tentar usa-la no formulario). }
+    property Align;
+    property Anchors;
+    property Color;
+    property Constraints;
+    property Enabled;
+    property PopupMenu;
+    property TabOrder;
+    property TabStop;
+    property Visible;
+    property OnClick;
+    property OnEnter;
+    property OnExit;
+    property OnResize;
   end;
 
 implementation

@@ -22,7 +22,7 @@ Instalação com boss [boss install](https://github.com/academiadocodigo/TBGWebC
 
 Installation is done using the [boss install](https://github.com/academiadocodigo/TBGWebCharts) command:
 ``` sh
-boss install academiadocodigo/TBGWebCharts
+boss install abagrobrasil/TBGWebCharts
 ```
 
 ![image](https://github.com/grings/TBGWebCharts/assets/1357600/0e88cf11-b169-4c1f-a384-0888d9a0c3d4)
