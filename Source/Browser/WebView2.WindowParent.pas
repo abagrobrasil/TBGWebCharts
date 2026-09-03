@@ -6,6 +6,7 @@ interface
 
 uses
   Winapi.Windows,
+  Winapi.Messages,
   System.SysUtils,
   System.Classes,
   Vcl.Controls,
@@ -27,6 +28,14 @@ type
     procedure UpdateBounds;
   protected
     procedure Resize; override;
+    { Controles escondidos (ex.: pagina inativa de um TPageControl, painel
+      criado com Visible=False) recebem seu layout final via AlignControls
+      sem nunca disparar WM_SIZE - TWinControl.CMShowingChanged troca a
+      visibilidade da janela com SWP_NOSIZE. Sem este hook, se o Bounds do
+      controller for calculado enquanto o controle ainda esta oculto, ele
+      fica travado nesse tamanho (normalmente menor que o painel real) ate
+      que ocorra um resize de verdade. }
+    procedure CMShowingChanged(var Message: TMessage); message CM_SHOWINGCHANGED;
   public
     destructor Destroy; override;
     { Dispara a criacao assincrona do Environment/Controller/CoreWebView2.
@@ -107,6 +116,12 @@ begin
 end;
 
 procedure TWebView2WindowParent.Resize;
+begin
+  inherited;
+  UpdateBounds;
+end;
+
+procedure TWebView2WindowParent.CMShowingChanged(var Message: TMessage);
 begin
   inherited;
   UpdateBounds;
