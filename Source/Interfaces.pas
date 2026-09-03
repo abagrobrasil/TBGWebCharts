@@ -38,6 +38,11 @@ uses
       uCEFWindowParent,
     {$ENDIF}
   {$ENDIF}
+  {$IFDEF HAS_WEBVIEW2}
+    {$IFNDEF HAS_FMX}
+      WebView2.WindowParent,
+    {$ENDIF}
+  {$ENDIF}
    System.SysUtils,
    Classes,
    Charts.Types,
@@ -203,6 +208,11 @@ type
         function WindowParent(Value: TCEFWindowParent): IModelHTML; overload;
       {$ENDIF}
       function Maps: IModelMaps;
+    {$ENDIF}
+    {$IFDEF HAS_WEBVIEW2}
+      {$IFNDEF HAS_FMX}
+        function WebBrowser(Value: TWebView2WindowParent): IModelHTML; overload;
+      {$ENDIF}
     {$ENDIF}
     {$IFDEF FULL}
       function Cards: IModelCards;
@@ -1358,38 +1368,38 @@ type
   IModelTableOption = interface(IInterface)
     ['{2DFF85D5-1116-4160-AAE4-8A5172B8EFD8}']
     function &End: IModelTable;
-    //1 Atraso no carregamento dos dados do servidor até o segundo sorteio
+    //1 Atraso no carregamento dos dados do servidor atï¿½ o segundo sorteio
     function DeferLoading(Value: Integer): IModelTableOption;
-    //1 Ponto inicial de paginação inicial
+    //1 Ponto inicial de paginaï¿½ï¿½o inicial
     function DisplayStart(Value: Integer): IModelTableOption;
-    //1 Altere as opções na selectlista de comprimento da página .
+    //1 Altere as opï¿½ï¿½es na selectlista de comprimento da pï¿½gina .
     function LengthMenu(Value: string): IModelTableOption;
     //1 DOM Id
     function Name: string; overload;
     //1 DOM Id
     function Name(Value: string): IModelTableOption; overload;
-    //1 Destrua qualquer tabela existente que corresponda ao seletor e substitua pelas novas opções.
+    //1 Destrua qualquer tabela existente que corresponda ao seletor e substitua pelas novas opï¿½ï¿½es.
     function OpDestroy(Value: Boolean): IModelTableOption;
-    //1 Ordem inicial(classificação)a ser aplicada à tabela
+    //1 Ordem inicial(classificaï¿½ï¿½o)a ser aplicada ï¿½ tabela
     function Order(Value: string): IModelTableOption;
-    //1 Controlar em qual célula o manipulador de eventos do pedido será aplicado em uma coluna
+    //1 Controlar em qual cï¿½lula o manipulador de eventos do pedido serï¿½ aplicado em uma coluna
     function OrderCellsTop(Value: Boolean): IModelTableOption;
-    //1 Destaque as colunas que estão sendo ordenadas no corpo da tabela
+    //1 Destaque as colunas que estï¿½o sendo ordenadas no corpo da tabela
     function OrderClasses(Value: Boolean): IModelTableOption;
-    //1 Ordenação para sempre ser aplicada à tabela
+    //1 Ordenaï¿½ï¿½o para sempre ser aplicada ï¿½ tabela
     function OrderFixed(Value: string): IModelTableOption;
-    //1 Controle de capacidade de ordenação de várias colunas.
+    //1 Controle de capacidade de ordenaï¿½ï¿½o de vï¿½rias colunas.
     function OrderMulti(Value: Boolean): IModelTableOption;
-    //1 Alterar o comprimento da página inicial(número de linhas por página)
+    //1 Alterar o comprimento da pï¿½gina inicial(nï¿½mero de linhas por pï¿½gina)
     function PageLength(Value: Integer): IModelTableOption;
-    //1 Opções de exibição do botão de paginação
+    //1 Opï¿½ï¿½es de exibiï¿½ï¿½o do botï¿½o de paginaï¿½ï¿½o
     function PagingType(Value: string): IModelTableOption;
-    //1 Habilitar e configurar a extensão responsiva para DataTables
+    //1 Habilitar e configurar a extensï¿½o responsiva para DataTables
     function Responsive(Value: Boolean): IModelTableOption;
     function Result: string;
-    //1 Recuperar uma instância existente do DataTables
+    //1 Recuperar uma instï¿½ncia existente do DataTables
     function Retrieve(Value: Boolean): IModelTableOption;
-    //1 Permita que a tabela reduza em altura quando um número limitado de linhas for mostrado.
+    //1 Permita que a tabela reduza em altura quando um nï¿½mero limitado de linhas for mostrado.
     function ScrollCollapse(Value: Boolean): IModelTableOption;
   end;
 
@@ -1398,15 +1408,15 @@ type
     function &End: IModelTable;
     //1 Controle de recursos Tratamento de largura de colunas inteligentes do DataTables
     function AutoWidth(Value: Boolean): IModelTableFeatures;
-    //1 Controle diferenciado renderização adiada para velocidade adicional de inicialização.
+    //1 Controle diferenciado renderizaï¿½ï¿½o adiada para velocidade adicional de inicializaï¿½ï¿½o.
     function DeferRender(Value: Boolean): IModelTableFeatures;
-    //1 Campo de exibição de informações da tabela de controle de recursos
+    //1 Campo de exibiï¿½ï¿½o de informaï¿½ï¿½es da tabela de controle de recursos
     function Info(Value: Boolean): IModelTableFeatures;
-    //1 O recurso controla a capacidade do usuário final de alterar o comprimento da exibição de paginação da tabela.
+    //1 O recurso controla a capacidade do usuï¿½rio final de alterar o comprimento da exibiï¿½ï¿½o de paginaï¿½ï¿½o da tabela.
     function LengthChange(Value: Boolean): IModelTableFeatures;
-    //1 Recursos de ordenação de controle de recursos(classificação)no DataTables.
+    //1 Recursos de ordenaï¿½ï¿½o de controle de recursos(classificaï¿½ï¿½o)no DataTables.
     function Ordering(Value: Boolean): IModelTableFeatures;
-    //1 Ativar ou desativar a paginação da tabela
+    //1 Ativar ou desativar a paginaï¿½ï¿½o da tabela
     function Paging(Value: Boolean): IModelTableFeatures;
     //1 O recurso controla o indicador de processamento
     function Processing(Value: Boolean): IModelTableFeatures;
@@ -1419,7 +1429,7 @@ type
     function Searching(Value: Boolean): IModelTableFeatures;
     //1 Controle de recurso Modo de processamento no lado do servidor do DataTables
     function ServerSide(Value: Boolean): IModelTableFeatures;
-    //1 Economia de estado - restaura o estado da tabela no recarregamento da página.
+    //1 Economia de estado - restaura o estado da tabela no recarregamento da pï¿½gina.
     function StateSave(Value: Boolean): IModelTableFeatures;
   end;
 

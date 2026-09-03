@@ -62,6 +62,11 @@ uses
       uCEFWindowParent,
     {$ENDIF}
   {$ENDIF}
+  {$IFDEF HAS_WEBVIEW2}
+    {$IFNDEF HAS_FMX}
+      WebView2.WindowParent,
+    {$ENDIF}
+  {$ENDIF}
   Classes,
   PackJS,
   PackCss,
@@ -111,6 +116,11 @@ Type
         function WindowParent(Value: TCEFWindowParent) : iModelHTML; overload;
       {$ENDIF}
       function Maps : iModelMaps;
+    {$ENDIF}
+    {$IFDEF HAS_WEBVIEW2}
+      {$IFNDEF HAS_FMX}
+        function WebBrowser(Value: TWebView2WindowParent): iModelHTML; overload;
+      {$ENDIF}
     {$ENDIF}
     function Generated: iModelHTML;
     function BackgroundColor( Value : String) : iModelHTML;
@@ -171,6 +181,11 @@ uses
     {$ENDIF}
     Maps,
   {$ENDIF}
+  {$IFDEF HAS_WEBVIEW2}
+    {$IFNDEF HAS_FMX}
+      Browser.VCL.WebView2,
+    {$ENDIF}
+  {$ENDIF}
   PivotTable,
   LiquidFillGauge,
   CardStyled, DomElement, RichTextEditor, JSCommand, Progress;
@@ -179,21 +194,21 @@ uses
 procedure TModelHTML.ExecuteScript(Value : iModelJSCommand);
 begin
   if not Assigned(FWebBrowser) then
-    raise Exception.Create('Primeiro é preciso setar o WebBrowser');
+    raise Exception.Create('Primeiro ï¿½ preciso setar o WebBrowser');
   FWebBrowser.ExecuteScript(Value);
 end;
 
 function TModelHTML.ExecuteScriptResult(Value : iModelJSCommand) : string;
 begin
   if not Assigned(FWebBrowser) then
-    raise Exception.Create('Primeiro é preciso setar o WebBrowser');
+    raise Exception.Create('Primeiro ï¿½ preciso setar o WebBrowser');
   Result := FWebBrowser.ExecuteScriptResult(Value);
 end;
 
 procedure TModelHTML.ExecuteScriptCallback(Value: iModelJSCommand);
 begin
   if not Assigned(FWebBrowser) then
-    raise Exception.Create('Primeiro é preciso setar o WebBrowser');
+    raise Exception.Create('Primeiro ï¿½ preciso setar o WebBrowser');
   FWebBrowser.ExecuteScriptCallback(Value);
 end;
 
@@ -444,7 +459,7 @@ end;
 function TModelHTML.CallbackJS : iCallbackJS;
 begin
   if not Assigned(FWebBrowser) then
-    raise Exception.Create('Para usar CallbackJS primeiro é preciso setar o WebBrowser');
+    raise Exception.Create('Para usar CallbackJS primeiro ï¿½ preciso setar o WebBrowser');
 
   Result := Self;
 end;
@@ -497,7 +512,7 @@ begin
   Result := Self;
 
   if not Assigned(FWindowParent) then
-    raise Exception.Create('Para usar Chromium, primeiro é preciso setar o FFMXWindowParent');
+    raise Exception.Create('Para usar Chromium, primeiro ï¿½ preciso setar o FFMXWindowParent');
 
   FWebBrowser := TModelBrowserFMXChromium.New(Value, FWindowParent);
 end;
@@ -512,7 +527,7 @@ function TModelHTML.WebBrowser(Value: TChromium): iModelHTML;
 begin
   Result := Self;
   if not Assigned(FWindowParent) then
-    raise Exception.Create('Para usar Chromium, primeiro é preciso setar o FCEFWindowParent');
+    raise Exception.Create('Para usar Chromium, primeiro ï¿½ preciso setar o FCEFWindowParent');
 
   FWebBrowser := TModelBrowserVCLChromium.New(Value, FWindowParent);
 end;
@@ -527,6 +542,16 @@ function TModelHTML.Maps : iModelMaps;
 begin
   Result := TModelMaps.New(Self);
 end;
+{$ENDIF}
+
+{$IFDEF HAS_WEBVIEW2}
+  {$IFNDEF HAS_FMX}
+function TModelHTML.WebBrowser(Value: TWebView2WindowParent): iModelHTML;
+begin
+  Result := Self;
+  FWebBrowser := TModelBrowserVCLWebView2.New(Value);
+end;
+  {$ENDIF}
 {$ENDIF}
 
 end.

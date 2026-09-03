@@ -172,7 +172,10 @@ contains
   Table.Features in 'Source\Table\Table.Features.pas',
   Table.Options in 'Source\Table\Table.Options.pas',
   Table in 'Source\Table\Table.pas',
-  Browser.VCL.WebBrowser in 'Source\Browser\Browser.VCL.WebBrowser.pas';
+  Browser.VCL.WebBrowser in 'Source\Browser\Browser.VCL.WebBrowser.pas',
+  WebView2.Api in 'Source\Browser\WebView2.Api.pas',
+  WebView2.WindowParent in 'Source\Browser\WebView2.WindowParent.pas',
+  Browser.VCL.WebView2 in 'Source\Browser\Browser.VCL.WebView2.pas';
 
 end.
 

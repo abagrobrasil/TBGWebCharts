@@ -8,4 +8,8 @@
 
 (* IF CEF is installed, uncomment below*)
 
-  {$DEFINE HAS_CHROMIUM}
+  //{$DEFINE HAS_CHROMIUM}
+
+(* IF o WebView2 Runtime e o WebView2Loader.dll estiverem disponiveis (backend VCL), uncomment abaixo*)
+
+  {$DEFINE HAS_WEBVIEW2}

@@ -60,7 +60,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=;CFBundleName=</VerInfo_Keys>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_BplOutput>.\$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_UnitSearchPath>.\Source\Include;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>.\Source\Include;.\Source\Browser;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -244,6 +244,9 @@
         <DCCReference Include="Source\Table\Table.Options.pas"/>
         <DCCReference Include="Source\Table\Table.pas"/>
         <DCCReference Include="Source\Browser\Browser.VCL.WebBrowser.pas"/>
+        <DCCReference Include="Source\Browser\WebView2.Api.pas"/>
+        <DCCReference Include="Source\Browser\WebView2.WindowParent.pas"/>
+        <DCCReference Include="Source\Browser\Browser.VCL.WebView2.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
