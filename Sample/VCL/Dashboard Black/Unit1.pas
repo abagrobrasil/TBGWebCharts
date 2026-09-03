@@ -6,13 +6,12 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.ExtCtrls,
-  Vcl.OleCtrls,
   System.SysUtils,
   System.Classes,
   Data.DB,
   Datasnap.DBClient,
   View.WebCharts,
-  SHDocVw;
+  WebView2.WindowParent;
 
 type
   TForm1 = class(TForm)
@@ -22,7 +21,7 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
-    WebBrowser1: TWebBrowser;
+    WebView2WindowParent1: TWebView2WindowParent;
     WebCharts1: TWebCharts;
     procedure FormCreate(Sender: TObject);
   strict private
@@ -237,7 +236,7 @@ begin
             '</div>')
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 

@@ -1,10 +1,10 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  BorderStyle = bsNone
+  BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 665
-  ClientWidth = 1082
+  ClientHeight = 627
+  ClientWidth = 1115
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,45 +18,43 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1082
-    Height = 665
+    Width = 1115
+    Height = 627
     Align = alClient
     BevelOuter = bvNone
     Color = 2040615
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 1082
+    ExplicitHeight = 665
     object Panel2: TPanel
       Left = 0
       Top = 0
       Width = 73
-      Height = 665
+      Height = 627
       Align = alLeft
       BevelOuter = bvNone
       Color = 1448220
       ParentBackground = False
       TabOrder = 0
+      ExplicitHeight = 665
     end
     object Panel3: TPanel
       Left = 73
       Top = 0
-      Width = 1009
-      Height = 665
+      Width = 1042
+      Height = 627
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      object WebBrowser1: TWebBrowser
+      ExplicitLeft = 79
+      ExplicitWidth = 1009
+      ExplicitHeight = 665
+      object WebView2WindowParent1: TWebView2WindowParent
         Left = 0
         Top = 0
-        Width = 1009
+        Width = 960
         Height = 665
-        Align = alClient
-        TabOrder = 0
-        ControlData = {
-          4C0000006D530000FC3600000000000000000000000000000000000000000000
-          000000004C000000000000000000000001000000E0D057007335CF11AE690800
-          2B2E126208000000000000004C0000000114020000000000C000000000000046
-          8000000000000000000000000000000000000000000000000000000000000000
-          00000000000000000100000000000000000000000000000000000000}
       end
     end
   end
