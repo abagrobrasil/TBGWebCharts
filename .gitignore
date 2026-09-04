@@ -67,3 +67,10 @@ __recovery/
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
 readme2.md
+
+# WebView2 runtime user-data folder (created next to the .exe on first run).
+# Contains the Edge browser profile - History, Cookies, Login Data, cache, etc.
+# Never commit this: it's a runtime artifact, not source, and can hold
+# personal/browsing data from whoever ran the app.
+*.WebView2/
+EBWebView/
