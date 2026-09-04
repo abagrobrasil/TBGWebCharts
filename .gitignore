@@ -74,3 +74,5 @@ readme2.md
 # personal/browsing data from whoever ran the app.
 *.WebView2/
 EBWebView/
+# Notas internas de evolucao do projeto (uso local, nao versionar)
+EVOLUCAO.md
