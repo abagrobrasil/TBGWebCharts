@@ -127,6 +127,7 @@
         <DCCReference Include="Source\JQuery.UIJS.pas"/>
         <DCCReference Include="Source\JqueryJS.pas"/>
         <DCCReference Include="Source\JSCommand.pas"/>
+        <DCCReference Include="Source\JSModules.pas"/>
         <DCCReference Include="Source\Jumbotron.pas"/>
         <DCCReference Include="Source\LiquidFillGauge.Config.pas"/>
         <DCCReference Include="Source\LiquidFillGauge.pas"/>
@@ -138,6 +139,7 @@
         <DCCReference Include="Source\NumberJS.pas"/>
         <DCCReference Include="Source\PackCss.pas"/>
         <DCCReference Include="Source\PackJS.pas"/>
+        <DCCReference Include="Source\PhosphorIconsJS.pas"/>
         <DCCReference Include="Source\PopperJS.pas"/>
         <DCCReference Include="Source\Progress.Info.Icon.pas"/>
         <DCCReference Include="Source\Progress.Info.pas"/>

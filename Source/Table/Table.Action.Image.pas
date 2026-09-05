@@ -15,6 +15,7 @@ type
       FHeight : Integer;
       FTooltip : String;
       FStyleClass : String;
+      FIconClass : String;
     public
       constructor Create(Parent : iModelTableAction);
       destructor Destroy; override;
@@ -24,10 +25,12 @@ type
       function Width (Value : Integer) : iModelTableActionImage; overload;
       function Height (Value : Integer) : iModelTableActionImage; overload;
       function Tooltip (Value : String) : iModelTableActionImage; overload;
+      function IconClass (Value : String) : iModelTableActionImage; overload;
       function Image : String; overload;
       function Width : String; overload;
       function Height : String; overload;
       function Tooltip : String overload;
+      function IconClass : String; overload;
       function StyleClass : String; overload;
 
       function &End : iModelTableAction;
@@ -121,6 +124,17 @@ end;
 function TModelTableActionImage.Image: String;
 begin
   Result := FImage;
+end;
+
+function TModelTableActionImage.IconClass(Value: String): iModelTableActionImage;
+begin
+  Result := Self;
+  FIconClass := Value;
+end;
+
+function TModelTableActionImage.IconClass: String;
+begin
+  Result := FIconClass;
 end;
 
 end.

@@ -1354,6 +1354,19 @@ type
     function Tooltip(Value: string): IModelTableActionImage; overload;
     function Width: string; overload;
     function Width(Value: Integer): IModelTableActionImage; overload;
+    { Alternativa ao Image(...) (PNG base64 embutido, sempre disponivel sem
+      depender de fonte de icone carregada): usa uma classe CSS de icon-font
+      (ex. 'ph ph-pencil-simple', 'fas fa-pen') em vez do <img>/background-image
+      padrao. So funciona se a fonte de icone correspondente estiver de fato
+      carregada na pagina (bundle offline ou CDN) - responsabilidade de quem
+      chama, por isso e opt-in e nao o default.
+      Declarado ao FINAL da interface de proposito (nao no meio) - Delphi
+      despacha interface por posicao na vtable, nao por nome; inserir um
+      metodo novo no meio desloca a posicao de todos os que vem depois, o
+      que quebra qualquer binario ja compilado (pacote instalado, etc.) que
+      ainda nao foi recompilado contra essa versao da interface. }
+    function IconClass: string; overload;
+    function IconClass(Value: string): IModelTableActionImage; overload;
   end;
 
   IModelTableAction = interface(IInterface)

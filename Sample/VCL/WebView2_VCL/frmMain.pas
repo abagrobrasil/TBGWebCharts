@@ -130,7 +130,11 @@ end;
   ExecuteScriptCallback) e as acoes de linha (ActionEdit/ActionDelete), que
   dependem do NavigationStarting interceptar "ActionCallBackJS:Metodo(...)"
   - ver TWebView2WindowParent.OnNavigationStarting em
-  Browser.VCL.WebView2.pas. }
+  Browser.VCL.WebView2.pas.
+  ActionEdit/ActionDelete tambem exercitam Image.IconClass(...) (novo,
+  2026-09-05) - troca o PNG base64 embutido default por um icon-font
+  (aqui, Phosphor via CDN, ja que .CDN(true) esta ligado acima) - ver
+  IModelTableActionImage em Interfaces.pas. }
 procedure TForm1.EnsureTableDataSet;
 begin
   if Assigned(FTableDataSet) then
@@ -161,9 +165,15 @@ begin
         .DataSet(FTableDataSet)
         .ActionEdit
           .CallbackLink('Nome', 'RowEdit')
+          .Image
+            .IconClass('ph ph-pencil-simple')
+          .&End
         .&End
         .ActionDelete
           .CallbackLink('Nome', 'RowDelete')
+          .Image
+            .IconClass('ph ph-trash')
+          .&End
         .&End
       .&End
     .&End

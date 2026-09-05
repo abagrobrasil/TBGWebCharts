@@ -82,7 +82,10 @@ end;
 
 function TModelTableAction.ImageTag: String;
 begin
-  Result := '<img class= "' + FImage.StyleClass + '" ' + FImage.Tooltip + '/>';
+  if not FImage.IconClass.IsEmpty then
+    Result := '<i class="' + FImage.IconClass + '"' + FImage.Tooltip + '></i>'
+  else
+    Result := '<img class= "' + FImage.StyleClass + '" ' + FImage.Tooltip + '/>';
 end;
 
 function TModelTableAction.Image: iModelTableActionImage;
@@ -98,6 +101,9 @@ end;
 
 function TModelTableAction.ResultStyle: String;
 begin
+  if not FImage.IconClass.IsEmpty then
+    Exit('');
+
   Result := '.' + FImage.StyleClass + '{' +
     'background: url("' + FImage.Image + '");' +
     'background-size: cover;' +
