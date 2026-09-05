@@ -9203,7 +9203,14 @@ var
   I: Integer;
 begin
   if FCDN then
-    Result := '<script src="https://kit.fontawesome.com/b9e0a0bfd1.js" crossorigin="anonymous"></script>'
+    { kit.fontawesome.com/b9e0a0bfd1.js e um Kit pessoal (de terceiro) que
+      so autoriza dominios especificos cadastrados na conta de quem criou
+      - nem about:blank nem tbgwebcharts.local (origens que o WebView2
+      usa) estao nessa lista, e nao temos acesso pra adicionar. 403
+      confirmado em 2026-09-05. Trocado pela CDN publica oficial (cdnjs),
+      sem Kit/restricao de dominio - FA5 Free (solid+regular+brands, sem
+      Pro/duotone; o bundle offline usado por padrao aqui e FA5 tambem). }
+    Result := '<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>'
   else
   begin
     FontawesomeallJS_1;
