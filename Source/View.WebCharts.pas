@@ -23,7 +23,18 @@ Type
       FCredenciais : iModelCredenciais;
     procedure SetFolderDefaultRWC(const Value: string);
     public
-      constructor Create; reintroduce;
+      { Precisa ser override de TComponent.Create(AOwner), nao reintroduce
+        de um Create sem parametro - achado em 2026-09-05: o streaming do
+        .dfm cria QUALQUER componente via TComponentClass(...).Create(AOwner)
+        (despacho pela metaclasse, sempre com a assinatura herdada). Um
+        Create reintroduzido com assinatura diferente nunca e chamado nesse
+        caminho - FCDN/FModules ficavam no valor zero-inicializado (False/
+        conjunto vazio) pra QUALQUER TWebCharts largado no formulario pela
+        IDE, silenciosamente excluindo TODAS as libs do bundle offline (e
+        de qualquer link CDN) a nao ser que .Modules(...) fosse chamado
+        explicitamente. AOwner tem default nil pra nao quebrar quem chama
+        TWebCharts.Create direto (sem dono, uso fora de formulario). }
+      constructor Create(AOwner: TComponent = nil); override;
       destructor Destroy; override;
       class function New : iWebCharts;
       function AddResource(const Value: string): iWebCharts;
@@ -43,8 +54,9 @@ implementation
 uses
   HTML, TypInfo;
 { TWebCharts }
-constructor TWebCharts.Create;
+constructor TWebCharts.Create(AOwner: TComponent = nil);
 begin
+  inherited Create(AOwner);
 //  FModelHTML := TModelHTML.New;
   FCDN := False;
   FModules := cAllJSModules;

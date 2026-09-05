@@ -60,12 +60,26 @@ implementation
 
 {$R *.dfm}
 
-{ Botao "Generate": exercita IModelBrowser.Generated (grava HTML num arquivo
-  temporario e chama CoreWebView2.Navigate) - ver Browser.VCL.WebView2.pas. }
+{ Botao "Generate": exercita RichTextEditor (Quill) via CDN (.CDN(true)) -
+  ver Browser.VCL.WebView2.pas (Generated escolhe NavigateToString vs
+  NavigateToHtml pelo tamanho do HTML).
+  Restaurado pra .CDN(true) em 2026-09-05 depois de achar e corrigir o
+  bug real: TWebCharts.Create era "constructor Create; reintroduce;" (sem
+  parametro), que o streaming do .dfm NUNCA chama pra um componente
+  largado no formulario (sempre cria via Create(AOwner) herdado) - FModules
+  ficava vazio pra QUALQUER WebCharts1 de formulario, entao PackJS pulava
+  TODAS as libs condicionadas a "if jsX in FModules" (Quill incluso),
+  gerando HTML sem os <script src> - o que parecia (mas nao era) o
+  WebView2 bloqueando scripts externos. PackCss nao usa FModules (sempre
+  inclui os <link> de CSS), por isso so os <script> desapareciam - o
+  sintoma exato documentado em PENDENCIA-WEBVIEW2-CDN-SCRIPTS.md. Fix em
+  View.WebCharts.pas (Create agora e override de Create(AOwner), roda
+  sempre). Este botao volta a .CDN(true) pra confirmar que o Quill
+  renderiza certo de novo. }
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   WebCharts1
-  .CDN(false)
+  .CDN(true)
   .NewProject
     .RichTextEditor
       .Attributes
