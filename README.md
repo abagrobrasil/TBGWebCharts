@@ -27,6 +27,28 @@ boss install abagrobrasil/TBGWebCharts
 
 ![image](https://github.com/grings/TBGWebCharts/assets/1357600/0e88cf11-b169-4c1f-a384-0888d9a0c3d4)
 
+## 🔀 Qual backend de navegador usar? / Which browser backend to use?
+
+O TBGWebCharts renderiza o dashboard sempre da mesma forma (`.WebBrowser(x).Generated`) — o que muda é qual controle você solta no formulário. Os três suportados hoje:
+
+TBGWebCharts always renders the dashboard the same way (`.WebBrowser(x).Generated`) — what changes is which control you drop on the form. The three supported today:
+
+| Backend | Distribuição / Distribution | Requisito de runtime / Runtime requirement | Plataformas / Platforms | Engine |
+|---|---|---|---|---|
+| **WebView2** (`TWebView2WindowParent`) | Só `WebView2Loader.dll` (~150 KB) junto do `.exe` | WebView2 Runtime — já vem no Windows 10 atualizado/11; instalador Evergreen p/ máquinas isoladas | Windows (VCL) | Chromium atual (evergreen, atualiza sozinho) |
+| **CEF** (`TCEFWindowParent`, via CEF4Delphi) | Distribuição completa do Chromium Embedded (`libcef.dll`, locales, `.pak`) — centenas de MB | Nenhum — é autocontido, não depende do que está instalado no SO | Windows e, via FMX, macOS/Linux | Chromium fixo na versão que você empacota |
+| **WebBrowser nativo** (`TWebBrowser`) | Nenhuma — o controle já existe no SO/VCL | Nenhum requisito extra no Windows (VCL); no FMX mobile usa a webview nativa da plataforma | Windows (VCL) e, via FMX, Android/iOS/macOS | **VCL: IE11/Trident** (legado, em fim de vida pela Microsoft); FMX mobile: engine nativa moderna da plataforma |
+
+| Backend | Distribution | Runtime requirement | Platforms | Engine |
+|---|---|---|---|---|
+| **WebView2** (`TWebView2WindowParent`) | Just `WebView2Loader.dll` (~150 KB) next to the `.exe` | WebView2 Runtime — ships with updated Windows 10/11; Evergreen installer for isolated machines | Windows (VCL) | Current Chromium (evergreen, self-updating) |
+| **CEF** (`TCEFWindowParent`, via CEF4Delphi) | Full Chromium Embedded distribution (`libcef.dll`, locales, `.pak` files) — hundreds of MB | None — fully self-contained, doesn't depend on what's installed on the OS | Windows and, via FMX, macOS/Linux | Chromium pinned to the version you ship |
+| **Native WebBrowser** (`TWebBrowser`) | None — the control already exists in the OS/VCL | No extra requirement on Windows (VCL); FMX mobile uses the platform's native webview | Windows (VCL) and, via FMX, Android/iOS/macOS | **VCL: IE11/Trident** (legacy, being phased out by Microsoft); FMX mobile: modern native platform engine |
+
+**Recomendação / Recommendation**: pra Windows puro, `WebView2` é hoje a opção mais leve e com engine mais atual, sem dependência de pacote externo — use CEF só se precisar fixar a versão exata do Chromium ou já estiver em FMX cross-platform desktop. Evite o `TWebBrowser` no VCL pra conteúdo novo — ele roda sobre IE11/Trident, sem suporte a JS/CSS modernos.
+
+For pure Windows, `WebView2` is today the lightest option with the most current engine and no external package dependency — use CEF only if you need to pin an exact Chromium version or are already on FMX cross-platform desktop. Avoid `TWebBrowser` on VCL for new content — it runs on IE11/Trident, without modern JS/CSS support.
+
 ## 🌐 Usando com WebView2 (VCL) / Using with WebView2 (VCL)
 
 Alternativa ao Chromium/CEF pra quem não quer depender de um pacote externo: o `TWebView2WindowParent` hospeda o Microsoft Edge WebView2 nativamente.

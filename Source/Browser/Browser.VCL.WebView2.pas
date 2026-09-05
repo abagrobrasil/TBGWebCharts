@@ -39,13 +39,10 @@ uses
 
 const
   cWebView2OperationTimeoutMs = 10000;
+  cNavigateToStringMaxChars = 1500000;
 
 function BuildResultExpression(const Value: iModelJSCommand): string;
 begin
-  { Ao contrario do CEF (que precisa do truque "DOMVISITOR" via console.log,
-    ver Browser.Chromium.Events.pas), o ExecuteScript do WebView2 ja devolve
-    o valor da ultima expressao diretamente no callback - so precisamos
-    fazer o comando rodar e, na sequencia, ler o atributo pedido. }
   Result := '(function(){' + Value.ResultCommand + '; return document.getElementById("' +
     Value.TagID + '").' + Value.TagAttribute + ';})()';
 end;
@@ -68,7 +65,27 @@ begin
   end;
 end;
 
-{ TModelBrowserVCLWebView2 }
+function PathToFileUri(const FileName: string): string;
+const
+  cUnreserved: set of AnsiChar = ['A'..'Z', 'a'..'z', '0'..'9', '-', '.', '_', '~', '/', ':'];
+var
+  NormalizedPath: string;
+  Bytes: TBytes;
+  I: Integer;
+  B: Byte;
+begin
+  NormalizedPath := StringReplace(FileName, '\', '/', [rfReplaceAll]);
+  Bytes := TEncoding.UTF8.GetBytes(NormalizedPath);
+  Result := 'file:///';
+  for I := 0 to High(Bytes) do
+  begin
+    B := Bytes[I];
+    if (B < 128) and (AnsiChar(B) in cUnreserved) then
+      Result := Result + Chr(B)
+    else
+      Result := Result + '%' + IntToHex(B, 2);
+  end;
+end;
 
 constructor TModelBrowserVCLWebView2.Create(WindowParent: TWebView2WindowParent);
 begin
@@ -88,12 +105,6 @@ begin
   if FLastTempFile.IsEmpty then
     Exit;
   try
-    { Melhor esforco: o processo do WebView2 pode ainda estar com o arquivo
-      aberto por um instante apos a navegacao (ex.: renderer ainda descarregando
-      a pagina anterior). Falha ao apagar aqui nao deve quebrar o fluxo do
-      chamador - o arquivo so fica orfao em %TEMP%, o que e o problema que
-      esta rotina ja reduz na pratica (era 1 arquivo por Generated(), sem
-      nenhuma limpeza). }
     if TFile.Exists(FLastTempFile) then
       TFile.Delete(FLastTempFile);
   except
@@ -132,7 +143,7 @@ var
 begin
   UserCallback := Value.CallBack;
   if not Assigned(UserCallback) then
-    raise Exception.Create('Procedure para Callback inválida');
+    raise Exception.Create('Procedure para Callback invalida');
 
   WaitReady;
   Callback := procedure(ErrorCode: HResult; Json: string)
@@ -153,10 +164,7 @@ var
   Callback: TProc<HResult, string>;
 begin
   if FWaitingResult then
-    raise Exception.Create('ExecuteScriptResult (WebView2) chamado novamente antes do ' +
-      'anterior terminar - esta instancia nao suporta chamadas sincronas aninhadas ' +
-      '(ex.: um evento disparado durante o ProcessMessages da espera atual chamando ' +
-      'ExecuteScriptResult de novo).');
+    raise Exception.Create('ExecuteScriptResult (WebView2) chamado novamente antes do anterior terminar.');
 
   WaitReady;
 
@@ -199,14 +207,19 @@ begin
   Result := Self;
 
   WaitReady;
-
   DeleteLastTempFile;
+
+  if Length(FHTML) <= cNavigateToStringMaxChars then
+  begin
+    FWindowParent.CoreWebView2.NavigateToString(PWideChar(FHTML));
+    Exit;
+  end;
 
   CreateGUID(Id);
   TempFile := TPath.Combine(TPath.GetTempPath, 'TBGWebCharts_' + GUIDToString(Id) + '.html');
   TFile.WriteAllText(TempFile, FHTML, TEncoding.UTF8);
 
-  Uri := 'file:///' + StringReplace(TempFile, '\', '/', [rfReplaceAll]);
+  Uri := PathToFileUri(TempFile);
   FWindowParent.CoreWebView2.Navigate(PWideChar(Uri));
 
   FLastTempFile := TempFile;
