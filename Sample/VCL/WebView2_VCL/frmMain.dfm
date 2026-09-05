@@ -1,41 +1,48 @@
 object Form1: TForm1
-  Left = 0
-  Top = 0
+  Left = 516
+  Top = 327
   Caption = 'TBGWebCharts - WebView2 Sample'
   ClientHeight = 433
-  ClientWidth = 794
+  ClientWidth = 899
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  Position = poDesigned
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 794
+    Width = 899
     Height = 392
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 893
+    ExplicitHeight = 383
     object WebView2WindowParent1: TWebView2WindowParent
       Left = 0
       Top = 0
-      Width = 689
+      Width = 899
       Height = 392
       Align = alClient
       TabOrder = 0
+      ExplicitWidth = 893
+      ExplicitHeight = 383
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 392
-    Width = 794
+    Width = 899
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 383
+    ExplicitWidth = 893
     object Button1: TButton
       Left = 0
       Top = 0
@@ -106,9 +113,19 @@ object Form1: TForm1
       TabOrder = 6
       OnClick = Button7Click
     end
+    object Button8: TButton
+      Left = 735
+      Top = 0
+      Width = 105
+      Height = 41
+      Align = alLeft
+      Caption = 'Phosphor Demo'
+      TabOrder = 7
+      OnClick = Button8Click
+    end
   end
   object WebCharts1: TWebCharts
-    Left = 632
-    Top = 360
+    Left = 776
+    Top = 168
   end
 end

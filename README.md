@@ -81,3 +81,38 @@ end;
 ```
 
 Um exemplo completo está em [Sample/VCL/WebView2_VCL](Sample/VCL/WebView2_VCL).
+
+> **Limitação conhecida**: no backend WebView2, `.CDN(true)` em páginas com muitos `<script src>` externos (ex.: `RichTextEditor`, que carrega o Quill via CDN) tem um bug não resolvido — os scripts externos são silenciosamente ignorados e o editor não renderiza. Use `.CDN(false)` pro `RichTextEditor` nesse backend até isso ser corrigido. Recursos que só usam `<link rel="stylesheet">` (como os ícones via CDN abaixo) não são afetados.
+>
+> **Known limitation**: on the WebView2 backend, `.CDN(true)` on pages with many external `<script src>` tags (e.g. `RichTextEditor`, which loads Quill via CDN) has an unresolved bug — external scripts are silently ignored and the editor fails to render. Use `.CDN(false)` for `RichTextEditor` on this backend until it's fixed. Features that only use `<link rel="stylesheet">` (like CDN icons below) are not affected.
+
+## 👻 Ícones: Font Awesome ou Phosphor Icons / Icons: Font Awesome or Phosphor Icons
+
+A fonte de ícone padrão é o Font Awesome (`fas fa-*`), mas qualquer componente que aceite `Icon(Value: String)` (ex.: `CardStyled`, `Progress`) recebe uma classe CSS crua — permitindo usar o **Phosphor Icons** (`ph ph-*`) como segunda opção, sem configuração extra:
+
+The default icon source is Font Awesome (`fas fa-*`), but any component that accepts `Icon(Value: String)` (e.g. `CardStyled`, `Progress`) takes a raw CSS class — so **Phosphor Icons** (`ph ph-*`) works as a drop-in second option, no extra setup:
+
+```pascal
+'<i class="ph ph-heart"></i>'
+'<i class="ph ph-house"></i>'
+```
+
+- **`.CDN(false)`** (padrão/default): o CSS + as fontes (`.woff2`/`.woff`, peso "regular", ~1200 ícones) vêm embutidos como `data:` URI no próprio HTML gerado — zero requisição externa, funciona offline. Isso é adicionado ao bundle "kitchen sink" que já existe pras outras libs; se o peso (~2MB a mais no offline) for um problema, use `.Modules([...])` (ver abaixo) pra incluir só o que sua tela usa.
+- **`.CDN(true)`**: gera um `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">` apontando pro jsdelivr, sem embutir nada.
+
+- **`.CDN(false)`** (default): CSS + fonts (`.woff2`/`.woff`, "regular" weight, ~1200 icons) are embedded as `data:` URIs directly in the generated HTML — zero external requests, works offline. This is added to the "kitchen sink" bundle that already exists for the other libs; if the extra weight (~2MB offline) is a problem, use `.Modules([...])` (see below) to include only what your screen actually uses.
+- **`.CDN(true)`**: generates a `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">` pointing to jsdelivr instead of embedding anything.
+
+### Reduzindo o bundle offline / Trimming the offline bundle
+
+Por padrão, modo `.CDN(false)` embute TODAS as libs suportadas (Bootstrap, jQuery, Chart.js, DataTables, PivotTable+Plotly, Moment, D3, Quill, GMaps, Font Awesome, Phosphor Icons) em toda página gerada — retrocompatível, sem opt-in. Pra restringir a só o que sua tela usa, chame `.Modules([...])` com os itens de `TJSModule` (`Source/JSModules.pas`) que quiser:
+
+By default, `.CDN(false)` mode embeds ALL supported libs (Bootstrap, jQuery, Chart.js, DataTables, PivotTable+Plotly, Moment, D3, Quill, GMaps, Font Awesome, Phosphor Icons) into every generated page — backwards-compatible, no opt-in required. To restrict it to only what your screen actually uses, call `.Modules([...])` with the `TJSModule` entries (`Source/JSModules.pas`) you need:
+
+```pascal
+WebCharts1
+  .CDN(false)
+  .Modules([jsBootstrap, jsJQuery, jsPopper, jsPhosphorIcons])
+  .NewProject
+    // ...
+```

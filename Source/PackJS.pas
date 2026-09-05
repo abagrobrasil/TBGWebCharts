@@ -3,20 +3,23 @@ unit PackJS;
 interface
 uses
   Interfaces,
+  JSModules,
   Classes;
 type
-  TPackJS = class(TInterfacedObject,iModelJS)
+  TPackJS = class(TInterfacedObject,iModelJS,iModelJSPack)
     private
       FPack : TStringList;
       FCDN : Boolean;
+      FModules : TJSModules;
       FCredenciais : iModelCredenciais;
       function UpdateDomElement : string;
     public
       constructor Create;
       destructor Destroy; override;
-      class function New : iModelJS;
+      class function New : iModelJSPack;
       function PackJS : String;
       function CDN(Value : Boolean) : iModelJS;
+      function Modules(Value : TJSModules) : iModelJSPack;
       function Credenciais(Value : iModelCredenciais) : iModelJS;
   end;
 implementation
@@ -25,6 +28,7 @@ uses
   BootstrapJS,
   ChartbundleJS,
   FontawesomeallJS,
+  PhosphorIconsJS,
 	JqueryJS,
   PopperJS,
   TetherminJS,
@@ -53,6 +57,13 @@ constructor TPackJS.Create;
 begin
   FPack := TStringList.Create;
   FCDN := False;
+  FModules := cAllJSModules;
+end;
+
+function TPackJS.Modules(Value: TJSModules): iModelJSPack;
+begin
+  Result := Self;
+  FModules := Value;
 end;
 function TPackJS.Credenciais(Value: iModelCredenciais): iModelJS;
 begin
@@ -65,7 +76,7 @@ begin
   freeandnil(fpack);
   inherited;
 end;
-class function TPackJS.New: iModelJS;
+class function TPackJS.New: iModelJSPack;
 begin
   Result := Self.Create;
 end;
@@ -73,26 +84,52 @@ function TPackJS.PackJS : String;
 begin
   if FCDN then
   begin
-    Result := Result + TJqueryJS.New.CDN(FCDN).PackJS;
-    Result := Result + TPopperJS.New.CDN(FCDN).PackJS;
-    Result := Result + TBootstrapJS.New.CDN(FCDN).PackJS;
-    Result := Result + TFontawesomeallJS.New.CDN(FCDN).PackJS;
-    Result := Result + TDataTableJS.New.CDN(FCDN).PackJS;
-    Result := Result + TChartEasyPieJS.New.CDN(FCDN).PackJS;
-    Result := Result + TMomentJS.New.CDN(FCDN).PackJS;
-    Result := Result + TChartbundleJS.New.CDN(FCDN).PackJS;
-    Result := Result + TChartStreamJS.New.CDN(FCDN).PackJS;
-    Result := Result + '<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>';
-    Result := Result + TPivotTableJS.New.CDN(FCDN).PackJS;
-    Result := Result + TJQueryUIJS.New.CDN(FCDN).PackJS;
-    Result := Result + TPivotTablePlotlyJS.New.CDN(FCDN).PackJS;
-    Result := Result + TPivotTablePlotlyRendersJS.New.CDN(FCDN).PackJS;
-    Result := Result + TGMapsJS.New.Credenciais(FCredenciais).CDN(FCDN).PackJS;
-    Result := Result + TD3JS.New.CDN(FCDN).PackJS;
-    Result := Result + TLiquidFillGaugeJS.New.CDN(FCDN).PackJS;
-    Result := Result + TQuillEditorJS.New.CDN(FCDN).PackJS;
-    Result := Result + TQuillDeltaConverter.New.CDN(FCDN).PackJS;
-    Result := Result + TChartJSScript.New.CDN(FCDN).PackJS;
+    if jsJQuery in FModules then
+      Result := Result + TJqueryJS.New.CDN(FCDN).PackJS;
+    if jsPopper in FModules then
+      Result := Result + TPopperJS.New.CDN(FCDN).PackJS;
+    if jsBootstrap in FModules then
+      Result := Result + TBootstrapJS.New.CDN(FCDN).PackJS;
+    if jsFontAwesome in FModules then
+      Result := Result + TFontawesomeallJS.New.CDN(FCDN).PackJS;
+    if jsPhosphorIcons in FModules then
+      Result := Result + TPhosphorIconsJS.New.CDN(FCDN).PackJS;
+    if jsDataTable in FModules then
+      Result := Result + TDataTableJS.New.CDN(FCDN).PackJS;
+    if jsChartEasyPie in FModules then
+      Result := Result + TChartEasyPieJS.New.CDN(FCDN).PackJS;
+    if jsMoment in FModules then
+      Result := Result + TMomentJS.New.CDN(FCDN).PackJS;
+    if jsChartbundle in FModules then
+      Result := Result + TChartbundleJS.New.CDN(FCDN).PackJS;
+    if jsChartStream in FModules then
+      Result := Result + TChartStreamJS.New.CDN(FCDN).PackJS;
+    if jsNumber in FModules then
+      Result := Result + '<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>';
+    if jsPivotTable in FModules then
+      Result := Result + TPivotTableJS.New.CDN(FCDN).PackJS;
+    if jsJQueryUI in FModules then
+      Result := Result + TJQueryUIJS.New.CDN(FCDN).PackJS;
+    if jsPivotTablePlotly in FModules then
+    begin
+      Result := Result + TPivotTablePlotlyJS.New.CDN(FCDN).PackJS;
+      Result := Result + TPivotTablePlotlyRendersJS.New.CDN(FCDN).PackJS;
+    end;
+    if jsGMaps in FModules then
+      Result := Result + TGMapsJS.New.Credenciais(FCredenciais).CDN(FCDN).PackJS;
+    if jsD3 in FModules then
+      Result := Result + TD3JS.New.CDN(FCDN).PackJS;
+    if jsLiquidFillGauge in FModules then
+      Result := Result + TLiquidFillGaugeJS.New.CDN(FCDN).PackJS;
+    if jsQuillEditor in FModules then
+    begin
+      Result := Result + TQuillEditorJS.New.CDN(FCDN).PackJS;
+      Result := Result + TQuillDeltaConverter.New.CDN(FCDN).PackJS;
+    end;
+    if jsChartJSScript in FModules then
+      Result := Result + TChartJSScript.New.CDN(FCDN).PackJS;
+    if jsNumber in FModules then
+    begin
     Result := Result + '<script>';
     Result := Result + '(function (global, factory) {';
     Result := Result + '    if (typeof define === ''function'' && define.amd) {';
@@ -110,12 +147,12 @@ begin
     Result := Result + '        },';
     Result := Result + '        abbreviations: {';
     Result := Result + '            thousand: ''mil'',';
-    Result := Result + '            million: ''milhões'',';
+    Result := Result + '            million: ''milhï¿½es'',';
     Result := Result + '            billion: ''b'',';
     Result := Result + '            trillion: ''t''';
     Result := Result + '        },';
     Result := Result + '        ordinal: function (number) {';
-    Result := Result + '            return ''º'';';
+    Result := Result + '            return ''ï¿½'';';
     Result := Result + '        },';
     Result := Result + '        currency: {';
     Result := Result + '            symbol: ''R$''';
@@ -123,31 +160,60 @@ begin
     Result := Result + '    });';
     Result := Result + '}));';
     Result := Result + '</script>';
+    end;
   end
   else
-    Result := FPack.Text+
-        TJqueryJS.New.PackJS+
-        TPopperJS.New.PackJS+
-        TBootstrapJS.New.PackJS+
-        TFontawesomeallJS.New.PackJS+
-        TTetherminJS.New.PackJS+
-        TUtilsJS.New.PackJS+
-        TNumberJS.New.PackJS+
-        TDataTableJS.New.PackJS+
-        TChartEasyPieJS.New.PackJS+
-        TMomentJs.New.PackJS+
-        TChartbundleJS.New.PackJS+
-        TChartStreamJS.New.PackJS+
-        TPivotTableJS.New.PackJS+
-        TJQueryUIJS.New.PackJS+
-        TPivotTablePlotlyJS.New.PackJS+
-        TPivotTablePlotlyRendersJs.New.PackJS+
-        TGMapsJS.New.Credenciais(FCredenciais).PackJS+
-        TD3JS.New.PackJS+
-        TLiquidFillGaugeJS.New.PackJS+
-        TQuillEditorJS.New.CDN(FCDN).PackJS+
-        TQuillDeltaConverter.New.CDN(FCDN).PackJS+
-        TChartJSScript.new.CDN(FCDN).PackJS;
+  begin
+    Result := FPack.Text;
+    if jsJQuery in FModules then
+      Result := Result + TJqueryJS.New.PackJS;
+    if jsPopper in FModules then
+      Result := Result + TPopperJS.New.PackJS;
+    if jsBootstrap in FModules then
+      Result := Result + TBootstrapJS.New.PackJS;
+    if jsFontAwesome in FModules then
+      Result := Result + TFontawesomeallJS.New.PackJS;
+    if jsPhosphorIcons in FModules then
+      Result := Result + TPhosphorIconsJS.New.CDN(FCDN).PackJS;
+    if jsTetheremin in FModules then
+      Result := Result + TTetherminJS.New.PackJS;
+    if jsUtils in FModules then
+      Result := Result + TUtilsJS.New.PackJS;
+    if jsNumber in FModules then
+      Result := Result + TNumberJS.New.PackJS;
+    if jsDataTable in FModules then
+      Result := Result + TDataTableJS.New.PackJS;
+    if jsChartEasyPie in FModules then
+      Result := Result + TChartEasyPieJS.New.PackJS;
+    if jsMoment in FModules then
+      Result := Result + TMomentJs.New.PackJS;
+    if jsChartbundle in FModules then
+      Result := Result + TChartbundleJS.New.PackJS;
+    if jsChartStream in FModules then
+      Result := Result + TChartStreamJS.New.PackJS;
+    if jsPivotTable in FModules then
+      Result := Result + TPivotTableJS.New.PackJS;
+    if jsJQueryUI in FModules then
+      Result := Result + TJQueryUIJS.New.PackJS;
+    if jsPivotTablePlotly in FModules then
+    begin
+      Result := Result + TPivotTablePlotlyJS.New.PackJS;
+      Result := Result + TPivotTablePlotlyRendersJs.New.PackJS;
+    end;
+    if jsGMaps in FModules then
+      Result := Result + TGMapsJS.New.Credenciais(FCredenciais).PackJS;
+    if jsD3 in FModules then
+      Result := Result + TD3JS.New.PackJS;
+    if jsLiquidFillGauge in FModules then
+      Result := Result + TLiquidFillGaugeJS.New.PackJS;
+    if jsQuillEditor in FModules then
+    begin
+      Result := Result + TQuillEditorJS.New.CDN(FCDN).PackJS;
+      Result := Result + TQuillDeltaConverter.New.CDN(FCDN).PackJS;
+    end;
+    if jsChartJSScript in FModules then
+      Result := Result + TChartJSScript.New.CDN(FCDN).PackJS;
+  end;
   Result := Result + UpdateDomElement;
 end;
 function TPackJS.UpdateDomElement: string;

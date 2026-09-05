@@ -30,7 +30,8 @@ uses
   Winapi.Windows,
   Winapi.ActiveX,
   System.SysUtils,
-  System.Classes;
+  System.Classes,
+  System.Variants;
 
 type
   EventRegistrationToken = record
@@ -44,6 +45,12 @@ type
   ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler = interface;
   ICoreWebView2CreateCoreWebView2ControllerCompletedHandler = interface;
   ICoreWebView2ExecuteScriptCompletedHandler = interface;
+  ICoreWebView2NavigationStartingEventArgs = interface;
+  ICoreWebView2NavigationStartingEventHandler = interface;
+  ICoreWebView2WebResourceRequest = interface;
+  ICoreWebView2WebResourceResponse = interface;
+  ICoreWebView2WebResourceRequestedEventArgs = interface;
+  ICoreWebView2WebResourceRequestedEventHandler = interface;
 
   { ICoreWebView2Controller - GUID e ordem de metodos conferidos contra
     uWVTypeLibrary.pas (WebView4Delphi). So precisamos ir ate Get_CoreWebView2. }
@@ -75,14 +82,19 @@ type
   end;
 
   { ICoreWebView2 - GUID e ordem de metodos conferidos contra uWVTypeLibrary.pas
-    (WebView4Delphi). So precisamos ir ate ExecuteScript. }
+    (WebView4Delphi). Vai ate AddWebResourceRequestedFilter - precisado pra
+    servir o HTML gerado via URL virtual interceptada (WebResourceRequested),
+    em vez de NavigateToString (limite reais de ~2MB) ou Navigate(file://...)
+    (bug ERR_FILE_NOT_FOUND nunca resolvido). Os metodos entre ExecuteScript
+    e AddWebResourceRequestedFilter que nao usamos ficam com parametros
+    genericos (IUnknown/Integer) so pra vtable nao desalinhar. }
   ICoreWebView2 = interface(IUnknown)
     ['{76ECEACB-0462-4D94-AC83-423A6793775E}']
     function Get_Settings(out Settings: ICoreWebView2Settings): HResult; stdcall;
     function Get_Source(out Uri: PWideChar): HResult; stdcall;
     function Navigate(Uri: PWideChar): HResult; stdcall;
     function NavigateToString(HtmlContent: PWideChar): HResult; stdcall;
-    function add_NavigationStarting(const EventHandler: IUnknown; out Token: EventRegistrationToken): HResult; stdcall;
+    function add_NavigationStarting(const EventHandler: ICoreWebView2NavigationStartingEventHandler; out Token: EventRegistrationToken): HResult; stdcall;
     function remove_NavigationStarting(Token: EventRegistrationToken): HResult; stdcall;
     function add_ContentLoading(const EventHandler: IUnknown; out Token: EventRegistrationToken): HResult; stdcall;
     function remove_ContentLoading(Token: EventRegistrationToken): HResult; stdcall;
@@ -105,6 +117,34 @@ type
     function AddScriptToExecuteOnDocumentCreated(JavaScript: PWideChar; const Handler: IUnknown): HResult; stdcall;
     function RemoveScriptToExecuteOnDocumentCreated(Id: PWideChar): HResult; stdcall;
     function ExecuteScript(JavaScript: PWideChar; const Handler: ICoreWebView2ExecuteScriptCompletedHandler): HResult; stdcall;
+    function CapturePreview(ImageFormat: Integer; const ImageStream: IUnknown; const Handler: IUnknown): HResult; stdcall;
+    function Reload: HResult; stdcall;
+    function PostWebMessageAsJson(WebMessageAsJson: PWideChar): HResult; stdcall;
+    function PostWebMessageAsString(WebMessageAsString: PWideChar): HResult; stdcall;
+    function add_WebMessageReceived(const Handler: IUnknown; out Token: EventRegistrationToken): HResult; stdcall;
+    function remove_WebMessageReceived(Token: EventRegistrationToken): HResult; stdcall;
+    function CallDevToolsProtocolMethod(MethodName: PWideChar; ParametersAsJson: PWideChar; const Handler: IUnknown): HResult; stdcall;
+    function Get_BrowserProcessId(out Value: Cardinal): HResult; stdcall;
+    function Get_CanGoBack(out CanGoBack: Integer): HResult; stdcall;
+    function Get_CanGoForward(out CanGoForward: Integer): HResult; stdcall;
+    function GoBack: HResult; stdcall;
+    function GoForward: HResult; stdcall;
+    function GetDevToolsProtocolEventReceiver(EventName: PWideChar; out Receiver: IUnknown): HResult; stdcall;
+    function Stop: HResult; stdcall;
+    function add_NewWindowRequested(const EventHandler: IUnknown; out Token: EventRegistrationToken): HResult; stdcall;
+    function remove_NewWindowRequested(Token: EventRegistrationToken): HResult; stdcall;
+    function add_DocumentTitleChanged(const EventHandler: IUnknown; out Token: EventRegistrationToken): HResult; stdcall;
+    function remove_DocumentTitleChanged(Token: EventRegistrationToken): HResult; stdcall;
+    function Get_DocumentTitle(out Title: PWideChar): HResult; stdcall;
+    function AddHostObjectToScript(Name: PWideChar; const Obj: OleVariant): HResult; stdcall;
+    function RemoveHostObjectFromScript(Name: PWideChar): HResult; stdcall;
+    function OpenDevToolsWindow: HResult; stdcall;
+    function add_ContainsFullScreenElementChanged(const EventHandler: IUnknown; out Token: EventRegistrationToken): HResult; stdcall;
+    function remove_ContainsFullScreenElementChanged(Token: EventRegistrationToken): HResult; stdcall;
+    function Get_ContainsFullScreenElement(out Value: Integer): HResult; stdcall;
+    function add_WebResourceRequested(const EventHandler: ICoreWebView2WebResourceRequestedEventHandler; out Token: EventRegistrationToken): HResult; stdcall;
+    function remove_WebResourceRequested(Token: EventRegistrationToken): HResult; stdcall;
+    function AddWebResourceRequestedFilter(Uri: PWideChar; ResourceContext: Integer): HResult; stdcall;
   end;
 
   { ICoreWebView2Settings - existe apenas para tipar o parametro "out" de
@@ -123,6 +163,9 @@ type
     ['{B96D755E-0319-4E92-A296-23436F46A1FC}']
     function CreateCoreWebView2Controller(ParentWindow: HWND;
       const Handler: ICoreWebView2CreateCoreWebView2ControllerCompletedHandler): HResult; stdcall;
+    function CreateWebResourceResponse(const Content: IStream; StatusCode: Integer;
+      ReasonPhrase: PWideChar; Headers: PWideChar;
+      out Response: ICoreWebView2WebResourceResponse): HResult; stdcall;
   end;
 
   ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler = interface(IUnknown)
@@ -140,7 +183,91 @@ type
     function Invoke(ErrorCode: HResult; ResultObjectAsJson: PWideChar): HResult; stdcall;
   end;
 
-  { Implementacoes reutilizaveis dos 3 handlers acima, cada uma recebendo
+  { ICoreWebView2NavigationStartingEventArgs - GUID e ordem de metodos
+    conferidos, um a um, contra uWVTypeLibrary.pas (WebView4Delphi): Get_uri,
+    Get_IsUserInitiated, Get_IsRedirected, Get_RequestHeaders, Get_Cancel,
+    Set_Cancel, Get_NavigationId - nessa ordem exata. So usamos Get_Uri e
+    Set_Cancel, mas os demais precisam continuar declarados (mesmo sem
+    nenhuma chamada) pra vtable nao desalinhar; Get_RequestHeaders e tipado
+    como IUnknown por nunca ser chamado (todo ponteiro de interface COM tem
+    o mesmo tamanho binario - mesma logica do add_XXX/remove_XXX em
+    ICoreWebView2). Uma tentativa anterior de declarar esta interface (sem
+    o Delphi IDE disponivel pra conferir passo a passo) causou access
+    violation ao chamar Get_Uri/Set_Cancel - suspeita forte de que a
+    causa era exatamente algum destes metodos faltando ou fora de ordem. }
+  ICoreWebView2NavigationStartingEventArgs = interface(IUnknown)
+    ['{5B495469-E119-438A-9B18-7604F25F2E49}']
+    function Get_Uri(out Uri: PWideChar): HResult; stdcall;
+    function Get_IsUserInitiated(out IsUserInitiated: Integer): HResult; stdcall;
+    function Get_IsRedirected(out IsRedirected: Integer): HResult; stdcall;
+    function Get_RequestHeaders(out RequestHeaders: IUnknown): HResult; stdcall;
+    function Get_Cancel(out Cancel: Integer): HResult; stdcall;
+    function Set_Cancel(Cancel: Integer): HResult; stdcall;
+    function Get_NavigationId(out NavigationId: UInt64): HResult; stdcall;
+  end;
+
+  { ICoreWebView2NavigationStartingEventHandler - GUID conferido contra
+    uWVTypeLibrary.pas (WebView4Delphi). Ao contrario dos handlers "de uma
+    vez so" acima, este e um handler de evento PERSISTENTE (registrado via
+    ICoreWebView2.add_NavigationStarting e disparado a cada navegacao ate
+    ser removido com remove_NavigationStarting) - por isso quem o registra
+    precisa manter uma referencia forte pra ele (ver
+    TWebView2WindowParent.FNavigationStartingHandler), senao o objeto pode
+    ser liberado antes do evento disparar. }
+  ICoreWebView2NavigationStartingEventHandler = interface(IUnknown)
+    ['{9ADBE429-F36D-432B-9DDC-F8881FBD76E3}']
+    function Invoke(const Sender: ICoreWebView2;
+      const Args: ICoreWebView2NavigationStartingEventArgs): HResult; stdcall;
+  end;
+
+  { ICoreWebView2WebResourceResponse - nunca chamamos nenhum metodo dela,
+    so guardamos a referencia que CreateWebResourceResponse devolve e
+    entregamos pra Set_Response; por isso fica vazia (mesmo raciocinio do
+    placeholder ICoreWebView2Settings acima - seguro so por nunca fazermos
+    QueryInterface nem chamar metodo nenhum dela). }
+  ICoreWebView2WebResourceResponse = interface(IUnknown)
+    ['{AAFCC94F-FA27-48FD-97DF-830EF75AAEC9}']
+  end;
+
+  { ICoreWebView2WebResourceRequest - GUID e ordem conferidos contra
+    uWVTypeLibrary.pas. So usamos Get_Uri; os demais (Set_Uri/Get_Method/
+    Set_Method/Get_Content/Set_Content/Get_Headers) ficam com tipos
+    genericos so pra vtable nao desalinhar. }
+  ICoreWebView2WebResourceRequest = interface(IUnknown)
+    ['{97055CD4-512C-4264-8B5F-E3F446CEA6A5}']
+    function Get_Uri(out Uri: PWideChar): HResult; stdcall;
+    function Set_Uri(Uri: PWideChar): HResult; stdcall;
+    function Get_Method(out Method: PWideChar): HResult; stdcall;
+    function Set_Method(Method: PWideChar): HResult; stdcall;
+    function Get_Content(out Content: IStream): HResult; stdcall;
+    function Set_Content(const Content: IStream): HResult; stdcall;
+    function Get_Headers(out Headers: IUnknown): HResult; stdcall;
+  end;
+
+  { ICoreWebView2WebResourceRequestedEventArgs - GUID e ordem conferidos
+    contra uWVTypeLibrary.pas: Get_Request, Get_Response, Set_Response,
+    GetDeferral, Get_ResourceContext - nessa ordem exata. Usamos Get_Request
+    e Set_Response; GetDeferral/Get_ResourceContext ficam genericos. }
+  ICoreWebView2WebResourceRequestedEventArgs = interface(IUnknown)
+    ['{453E667F-12C7-49D4-BE6D-DDBE7956F57A}']
+    function Get_Request(out Request: ICoreWebView2WebResourceRequest): HResult; stdcall;
+    function Get_Response(out Response: ICoreWebView2WebResourceResponse): HResult; stdcall;
+    function Set_Response(const Response: ICoreWebView2WebResourceResponse): HResult; stdcall;
+    function GetDeferral(out Deferral: IUnknown): HResult; stdcall;
+    function Get_ResourceContext(out Context: Integer): HResult; stdcall;
+  end;
+
+  { ICoreWebView2WebResourceRequestedEventHandler - GUID conferido contra
+    uWVTypeLibrary.pas. Handler PERSISTENTE (igual NavigationStarting) -
+    quem registra precisa manter referencia forte (ver
+    TWebView2WindowParent.FWebResourceRequestedHandler). }
+  ICoreWebView2WebResourceRequestedEventHandler = interface(IUnknown)
+    ['{AB00B74C-15F1-4646-80E8-E76341D25D71}']
+    function Invoke(const Sender: ICoreWebView2;
+      const Args: ICoreWebView2WebResourceRequestedEventArgs): HResult; stdcall;
+  end;
+
+  { Implementacoes reutilizaveis dos handlers acima, cada uma recebendo
     uma anonymous method no construtor. }
 
   TCoreWebView2EnvironmentCompletedHandler = class(TInterfacedObject, ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler)
@@ -165,6 +292,38 @@ type
   public
     constructor Create(Callback: TProc<HResult, string>);
     function Invoke(ErrorCode: HResult; ResultObjectAsJson: PWideChar): HResult; stdcall;
+  end;
+
+  { Callback de alto nivel (Uri ja decodificado como string, Cancel como
+    Boolean comum) pra quem consome o evento NavigationStarting sem precisar
+    lidar com PWideChar/CoTaskMemFree/Integer-como-bool. }
+  TWebView2NavigationStartingProc = reference to procedure(const Uri: string; var Cancel: Boolean);
+
+  TCoreWebView2NavigationStartingHandler = class(TInterfacedObject, ICoreWebView2NavigationStartingEventHandler)
+  private
+    FCallback: TWebView2NavigationStartingProc;
+  public
+    constructor Create(Callback: TWebView2NavigationStartingProc);
+    function Invoke(const Sender: ICoreWebView2;
+      const Args: ICoreWebView2NavigationStartingEventArgs): HResult; stdcall;
+  end;
+
+  { Callback de alto nivel pro WebResourceRequested: entrega so a Uri ja
+    decodificada como string. O Args crua e repassado pra quem consome (ver
+    TWebView2WindowParent) montar e entregar a resposta via
+    ICoreWebView2Environment.CreateWebResourceResponse + Args.Set_Response -
+    isso fica fora deste unit porque exige o Environment, que so o
+    WindowParent tem a mao. }
+  TWebView2WebResourceRequestedProc = reference to procedure(const Uri: string;
+    const Args: ICoreWebView2WebResourceRequestedEventArgs);
+
+  TCoreWebView2WebResourceRequestedHandler = class(TInterfacedObject, ICoreWebView2WebResourceRequestedEventHandler)
+  private
+    FCallback: TWebView2WebResourceRequestedProc;
+  public
+    constructor Create(Callback: TWebView2WebResourceRequestedProc);
+    function Invoke(const Sender: ICoreWebView2;
+      const Args: ICoreWebView2WebResourceRequestedEventArgs): HResult; stdcall;
   end;
 
 { Carrega WebView2Loader.dll dinamicamente (LoadLibrary/GetProcAddress) e
@@ -259,6 +418,76 @@ begin
   if Assigned(FCallback) then
     FCallback(ErrorCode, ResultObjectAsJson);
   Result := S_OK;
+end;
+
+{ TCoreWebView2NavigationStartingHandler }
+
+constructor TCoreWebView2NavigationStartingHandler.Create(Callback: TWebView2NavigationStartingProc);
+begin
+  inherited Create;
+  FCallback := Callback;
+end;
+
+function TCoreWebView2NavigationStartingHandler.Invoke(const Sender: ICoreWebView2;
+  const Args: ICoreWebView2NavigationStartingEventArgs): HResult;
+var
+  UriPtr: PWideChar;
+  Uri: string;
+  Cancel: Boolean;
+begin
+  Result := S_OK;
+  if not Assigned(FCallback) or not Assigned(Args) then
+    Exit;
+
+  UriPtr := nil;
+  if Args.Get_Uri(UriPtr) <> S_OK then
+    Exit;
+  try
+    Uri := UriPtr;
+  finally
+    if Assigned(UriPtr) then
+      CoTaskMemFree(UriPtr);
+  end;
+
+  Cancel := False;
+  FCallback(Uri, Cancel);
+  if Cancel then
+    Args.Set_Cancel(1);
+end;
+
+{ TCoreWebView2WebResourceRequestedHandler }
+
+constructor TCoreWebView2WebResourceRequestedHandler.Create(Callback: TWebView2WebResourceRequestedProc);
+begin
+  inherited Create;
+  FCallback := Callback;
+end;
+
+function TCoreWebView2WebResourceRequestedHandler.Invoke(const Sender: ICoreWebView2;
+  const Args: ICoreWebView2WebResourceRequestedEventArgs): HResult;
+var
+  Request: ICoreWebView2WebResourceRequest;
+  UriPtr: PWideChar;
+  Uri: string;
+begin
+  Result := S_OK;
+  if not Assigned(FCallback) or not Assigned(Args) then
+    Exit;
+
+  if (Args.Get_Request(Request) <> S_OK) or not Assigned(Request) then
+    Exit;
+
+  UriPtr := nil;
+  if Request.Get_Uri(UriPtr) <> S_OK then
+    Exit;
+  try
+    Uri := UriPtr;
+  finally
+    if Assigned(UriPtr) then
+      CoTaskMemFree(UriPtr);
+  end;
+
+  FCallback(Uri, Args);
 end;
 
 end.

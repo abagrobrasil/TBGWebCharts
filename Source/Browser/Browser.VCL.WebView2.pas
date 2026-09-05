@@ -14,10 +14,13 @@ type
   TModelBrowserVCLWebView2 = class(TInterfacedObject, iModelBrowser)
   private
     FWindowParent: TWebView2WindowParent;
-    FLastTempFile: string;
     FWaitingResult: Boolean;
     procedure WaitReady;
-    procedure DeleteLastTempFile;
+    { Intercepta a "navegacao" pro pseudo-protocolo ActionCallBackJS:Metodo(...)
+      gerado pelas acoes de linha da Table (CallbackLink/ActionEdit/ActionDelete)
+      - mesmo parsing usado em Browser.VCL.WebBrowser.BeforeNavigate e
+      Browser.Chromium.Events.Chromium_BeforeBrowse. }
+    procedure HandleNavigationStarting(const Uri: string; var Cancel: Boolean);
   public
     constructor Create(WindowParent: TWebView2WindowParent);
     destructor Destroy; override;
@@ -32,14 +35,30 @@ implementation
 
 uses
   System.SysUtils,
-  System.IOUtils,
   System.JSON,
+  System.Classes,
   System.Diagnostics,
-  Vcl.Forms;
+  Vcl.Forms,
+  CallBackJS;
 
 const
-  cWebView2OperationTimeoutMs = 10000;
-  cNavigateToStringMaxChars = 1500000;
+  { Limite documentado do NavigateToString e ~2.097.152 chars (2MB).
+    NavigateToString e o caminho PRINCIPAL agora (comprovadamente
+    confiavel - e o que sempre funcionou aqui) pra qualquer HTML que
+    caiba nele; so paginas maiores usam NavigateToHtml (URL virtual +
+    WebResourceRequested, ver WebView2.WindowParent.pas). Motivo de nao
+    usar NavigateToHtml sempre (o que eliminaria esse teto de vez):
+    2026-09-05, descoberto com o sample real, que paginas com MUITOS
+    <script src=...> externos (modo CDN(true)) servidas via
+    WebResourceRequested tem os scripts silenciosamente ignorados pelo
+    WebView2 (confirmado nao ser cache, CSP nem header de Content-Type -
+    3 hipoteses testadas e descartadas uma a uma). Paginas CDN(true) sao
+    sempre pequenas (poucos KB, so tags script/link) e nunca esbarram
+    nesse teto mesmo, entao NavigateToString sozinho ja resolve esse
+    caso; NavigateToHtml fica so pra quando o HTML e grande de verdade
+    (tipicamente CDN(false), sem scripts externos - onde ja confirmamos
+    funcionando: Table Demo e Phosphor Demo, ~1.2MB). }
+  cNavigateToStringMaxChars = 1900000;
 
 function BuildResultExpression(const Value: iModelJSCommand): string;
 begin
@@ -65,51 +84,41 @@ begin
   end;
 end;
 
-function PathToFileUri(const FileName: string): string;
-const
-  cUnreserved: set of AnsiChar = ['A'..'Z', 'a'..'z', '0'..'9', '-', '.', '_', '~', '/', ':'];
-var
-  NormalizedPath: string;
-  Bytes: TBytes;
-  I: Integer;
-  B: Byte;
-begin
-  NormalizedPath := StringReplace(FileName, '\', '/', [rfReplaceAll]);
-  Bytes := TEncoding.UTF8.GetBytes(NormalizedPath);
-  Result := 'file:///';
-  for I := 0 to High(Bytes) do
-  begin
-    B := Bytes[I];
-    if (B < 128) and (AnsiChar(B) in cUnreserved) then
-      Result := Result + Chr(B)
-    else
-      Result := Result + '%' + IntToHex(B, 2);
-  end;
-end;
-
 constructor TModelBrowserVCLWebView2.Create(WindowParent: TWebView2WindowParent);
 begin
   inherited Create;
   FWindowParent := WindowParent;
+  FWindowParent.OnNavigationStarting := HandleNavigationStarting;
   FWindowParent.Initialize;
+end;
+
+procedure TModelBrowserVCLWebView2.HandleNavigationStarting(const Uri: string; var Cancel: Boolean);
+var
+  Aux, Method, Target: string;
+  Params: TStringList;
+begin
+  Target := Uri;
+  if not UpperCase(Target).StartsWith('ACTIONCALLBACKJS') then
+    Exit;
+
+  Method := Copy(Target, Pos(':', Target) + 1, Length(Target));
+  Method := Copy(Method, 1, Pos('(', Method) - 1);
+  Params := TStringList.Create;
+  try
+    Aux := Copy(Target, Pos('(', Target) + 1, Length(Target));
+    Aux := Copy(Aux, 1, LastDelimiter(')', Aux) - 1);
+    Params.CommaText := Aux;
+    if not Method.IsEmpty then
+      if vCallBackJS.TryGetValue(Method, Params) then
+        Cancel := True;
+  finally
+    Params.Free;
+  end;
 end;
 
 destructor TModelBrowserVCLWebView2.Destroy;
 begin
-  DeleteLastTempFile;
   inherited;
-end;
-
-procedure TModelBrowserVCLWebView2.DeleteLastTempFile;
-begin
-  if FLastTempFile.IsEmpty then
-    Exit;
-  try
-    if TFile.Exists(FLastTempFile) then
-      TFile.Delete(FLastTempFile);
-  except
-  end;
-  FLastTempFile := '';
 end;
 
 class function TModelBrowserVCLWebView2.New(WindowParent: TWebView2WindowParent): iModelBrowser;
@@ -122,8 +131,11 @@ var
   Stopwatch: TStopwatch;
 begin
   Stopwatch := TStopwatch.StartNew;
-  while not FWindowParent.Ready and (Stopwatch.ElapsedMilliseconds < cWebView2OperationTimeoutMs) do
+  while not FWindowParent.Ready and (Stopwatch.ElapsedMilliseconds < FWindowParent.OperationTimeoutMs) do
+  begin
     Application.ProcessMessages;
+    Sleep(1);
+  end;
 
   if not FWindowParent.Ready then
     raise Exception.Create('WebView2 nao ficou pronto a tempo (Environment/Controller).');
@@ -184,8 +196,11 @@ begin
       TCoreWebView2ExecuteScriptCompletedHandler.Create(Callback));
 
     Stopwatch := TStopwatch.StartNew;
-    while not Done and (Stopwatch.ElapsedMilliseconds < cWebView2OperationTimeoutMs) do
+    while not Done and (Stopwatch.ElapsedMilliseconds < FWindowParent.OperationTimeoutMs) do
+    begin
       Application.ProcessMessages;
+      Sleep(1);
+    end;
 
     if not Done then
       raise Exception.Create('Tempo esgotado aguardando o resultado do ExecuteScript (WebView2).');
@@ -199,30 +214,17 @@ begin
 end;
 
 function TModelBrowserVCLWebView2.Generated(FHTML: string): iModelBrowser;
-var
-  TempFile: string;
-  Uri: string;
-  Id: TGUID;
 begin
   Result := Self;
-
   WaitReady;
-  DeleteLastTempFile;
-
   if Length(FHTML) <= cNavigateToStringMaxChars then
-  begin
-    FWindowParent.CoreWebView2.NavigateToString(PWideChar(FHTML));
-    Exit;
-  end;
-
-  CreateGUID(Id);
-  TempFile := TPath.Combine(TPath.GetTempPath, 'TBGWebCharts_' + GUIDToString(Id) + '.html');
-  TFile.WriteAllText(TempFile, FHTML, TEncoding.UTF8);
-
-  Uri := PathToFileUri(TempFile);
-  FWindowParent.CoreWebView2.Navigate(PWideChar(Uri));
-
-  FLastTempFile := TempFile;
+    FWindowParent.CoreWebView2.NavigateToString(PWideChar(FHTML))
+  else
+    { So entra aqui pra HTML grande de verdade (tipicamente CDN(false)).
+      Serve via URL virtual interceptada (WebResourceRequested) - ver
+      WebView2.WindowParent.pas. Substitui o antigo fallback
+      Navigate(file://...) (bug ERR_FILE_NOT_FOUND nunca resolvido). }
+    FWindowParent.NavigateToHtml(FHTML);
 end;
 
 end.

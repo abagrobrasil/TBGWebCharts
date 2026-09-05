@@ -70,7 +70,8 @@ uses
   Classes,
   PackJS,
   PackCss,
-  Charts.Types;
+  Charts.Types,
+  JSModules;
 
 Type
     TModelHTML = class(TInterfacedObject, iModelHTML {$IFDEF HAS_CALLBACK} , iCallbackJS {$ENDIF})
@@ -89,6 +90,7 @@ Type
     FBackgroundColor : String;
     FFontColor : String;
     FCDN : Boolean;
+    FModules : TJSModules;
     FCredenciais : IModelCredenciais;
     function Container(Value : Boolean) : iModelHTML;
     function FolderDefaultRWC(Value : String) : iModelHTML;
@@ -127,6 +129,7 @@ Type
     function FontColor ( Value : String) : iModelHTML;
     function ContainerClass(Value : TTypeContainer) : iModelHTML;
     function CDN(Value : Boolean) : iModelHTML;
+    function Modules(Value : TJSModules) : iModelHTML;
     function Jumbotron : iModelJumbotron;
     function Alerts : iModelAlerts;
     function ListGroup : iModelListGroup;
@@ -304,6 +307,12 @@ begin
   FCDN := Value;
 end;
 
+function TModelHTML.Modules(Value : TJSModules) : iModelHTML;
+begin
+  Result := Self;
+  FModules := Value;
+end;
+
 function TModelHTML.ChartEasyPie : iModelChartEasyPie;
 begin
   Result := TModelHTMLFactory.New.ChartEasyPie(Self);
@@ -330,6 +339,7 @@ end;
 constructor TModelHTML.Create;
 begin
   FContainer := True;
+  FModules := cAllJSModules;
 end;
 
 destructor TModelHTML.Destroy;
@@ -379,6 +389,7 @@ begin
                     .CDN(FCDN)
                     .PackCSS;
   FHTML := FHTML + TPackJS.New
+                    .Modules(FModules)
                     .CDN(FCDN)
                     .Credenciais(FCredenciais)
                     .PackJS;
@@ -410,6 +421,7 @@ begin
                       .CDN(FCDN)
                       .PackCSS;
   FHTML := FHTML + TPackJS.New
+                      .Modules(FModules)
                       .CDN(FCDN)
                       .Credenciais(FCredenciais)
                       .PackJS;

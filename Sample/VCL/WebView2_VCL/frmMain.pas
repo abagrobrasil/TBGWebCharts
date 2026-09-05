@@ -17,6 +17,7 @@ uses
   Data.DB,
   Datasnap.DBClient,
   WebView2.WindowParent,
+  JSModules,
   View.WebCharts;
 
 type
@@ -28,6 +29,7 @@ type
     Button5: TButton;
     Button6: TButton;
     Button7: TButton;
+    Button8: TButton;
     Panel1: TPanel;
     Panel2: TPanel;
     WebView2WindowParent1: TWebView2WindowParent;
@@ -39,6 +41,7 @@ type
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
   strict private
     FContent: String;
     FTableDataSet: TClientDataSet;
@@ -46,6 +49,8 @@ type
   public
     procedure SaveContent(aValue: String);
     procedure SaveRichText(aValue: String);
+    procedure RowEdit(const Value: String);
+    procedure RowDelete(const Value: String);
   end;
 
 var
@@ -60,7 +65,7 @@ implementation
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   WebCharts1
-  .CDN(true)
+  .CDN(false)
   .NewProject
     .RichTextEditor
       .Attributes
@@ -121,8 +126,11 @@ begin
 end;
 
 { Botao "Table Demo": exercita a feature Table (DataTables) via
-  IModelBrowser.Generated - render estatico, sem callback JS -> Delphi
-  (Table nao usa ExecuteScript/ExecuteScriptCallback, so HTML puro). }
+  IModelBrowser.Generated (render estatico, sem ExecuteScript/
+  ExecuteScriptCallback) e as acoes de linha (ActionEdit/ActionDelete), que
+  dependem do NavigationStarting interceptar "ActionCallBackJS:Metodo(...)"
+  - ver TWebView2WindowParent.OnNavigationStarting em
+  Browser.VCL.WebView2.pas. }
 procedure TForm1.EnsureTableDataSet;
 begin
   if Assigned(FTableDataSet) then
@@ -151,6 +159,45 @@ begin
       .EndTableClass
       .DataSet
         .DataSet(FTableDataSet)
+        .ActionEdit
+          .CallbackLink('Nome', 'RowEdit')
+        .&End
+        .ActionDelete
+          .CallbackLink('Nome', 'RowDelete')
+        .&End
+      .&End
+    .&End
+  .WebBrowser(WebView2WindowParent1)
+  .CallbackJS
+    .ClassProvider(Self)
+  .&End
+  .Generated;
+end;
+
+{ Botao "Phosphor Demo": exercita o Phosphor Icons via CDN (.CDN(true) -
+  PhosphorIconsJS.pas gera <link rel="stylesheet" href=".../jsdelivr/...">
+  em vez do bundle offline embutido) - segunda opcao de fonte de icone alem
+  do Font Awesome, mesmo padrao de uso (classe CSS num <i>). Caminho recem
+  implementado (2026-09-05), ainda nao confirmado em runtime - ver
+  EVOLUCAO.md, "Frente paralela: Phosphor Icons".
+  .Modules([...]) restringe o HTML gerado so ao que essa demo usa de
+  verdade. }
+procedure TForm1.Button8Click(Sender: TObject);
+begin
+  WebCharts1
+  .CDN(true)
+  .Modules([jsBootstrap, jsJQuery, jsPopper, jsPhosphorIcons])
+  .NewProject
+    .Rows
+      ._Div
+        .Add(
+          '<div style="font-size:48px; display:flex; gap:24px; align-items:center;">' +
+          '<i class="ph ph-heart" style="color:#e63946"></i>' +
+          '<i class="ph ph-house"></i>' +
+          '<i class="ph ph-chart-bar"></i>' +
+          '<i class="ph ph-rocket-launch"></i>' +
+          '<i class="ph ph-butterfly"></i>' +
+          '</div>')
       .&End
     .&End
   .WebBrowser(WebView2WindowParent1)
@@ -166,6 +213,16 @@ end;
 procedure TForm1.SaveRichText(aValue: String);
 begin
   ShowMessage(aValue);
+end;
+
+procedure TForm1.RowEdit(const Value: String);
+begin
+  ShowMessage('Editar: ' + Value);
+end;
+
+procedure TForm1.RowDelete(const Value: String);
+begin
+  ShowMessage('Excluir: ' + Value);
 end;
 
 end.

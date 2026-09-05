@@ -46,11 +46,13 @@ uses
    System.SysUtils,
    Classes,
    Charts.Types,
+   JSModules,
    Colors.Bootstrap;
 
 type
   IWebCharts = interface;
   IModelHTML = interface;
+  IModelJSPack = interface;
   IModelHTMLChartsBar = interface;
   IModelHTMLCharts = interface;
   IModelHTMLChartsConfig = interface;
@@ -163,6 +165,7 @@ type
     function ContinuosProject: IModelHTML;
     function Credenciais: IModelCredenciais;
     function FontColor(const Value: string): IWebCharts;
+    function Modules(Value: TJSModules): IWebCharts;
     function NewProject: IModelHTML; overload;
     function NewProject(const Container: Boolean): IModelHTML; overload;
   end;
@@ -193,6 +196,7 @@ type
     function Jumpline: IModelHTML;
     function LiquiFillGauge: IModelLiquidFillGauge;
     function ListGroup: IModelListGroup;
+    function Modules(Value: TJSModules): IModelHTML;
     function PivotTable: IModelPivotTable;
     function Print: IModelHTML;
     function Progress: IModelProgress;
@@ -1563,6 +1567,18 @@ type
     function CDN(Value: Boolean): IModelJS;
     function Credenciais(Value: IModelCredenciais): IModelJS;
     function PackJS: string;
+  end;
+
+  { So TPackJS (o agregador de todas as libs) implementa esta - as ~25
+    classes individuais (TBootstrapJS, TJqueryJS etc.) continuam so com
+    IModelJS, sem precisar saber nada de TJSModules. Chamar .Modules(...)
+    logo apos TPackJS.New (antes de .CDN/.Credenciais) preserva o tipo
+    IModelJSPack na cadeia fluente - depois disso os outros metodos
+    (herdados de IModelJS) voltam a devolver IModelJS, o que e suficiente
+    ja que so .Modules precisa ser especifico do pack. }
+  IModelJSPack = interface(IModelJS)
+    ['{7C6C6C4E-1E7C-4B0B-9C0B-7E9A2B2E9C7E}']
+    function Modules(Value: TJSModules): IModelJSPack;
   end;
 
   IModelChartEasyPie = interface(IInterface)

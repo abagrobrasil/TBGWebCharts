@@ -5,6 +5,7 @@ uses
   Classes,
   Generics.Collections,
   SysUtils, Charts.Types,
+  JSModules,
   Credenciais;
 Type
   {$IF (RTLVERSION > 27) AND (RTLVERSION < 32) }[ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidAndroid)]{$IFEND}
@@ -18,6 +19,7 @@ Type
       FFontColor : String;
       FContainerClass : TTypeContainer;
       FCDN : Boolean;
+      FModules : TJSModules;
       FCredenciais : iModelCredenciais;
     procedure SetFolderDefaultRWC(const Value: string);
     public
@@ -32,6 +34,7 @@ Type
       function FontColor(const Value: string): iWebCharts;
       function Container(const Value: TTypeContainer): iWebCharts;
       function CDN(const Value: Boolean): iWebCharts;
+      function Modules(Value: TJSModules): iWebCharts;
       function Credenciais : iModelCredenciais;
     published
       property FolderDefaultRWC: string read FFolderDefaultRWC write SetFolderDefaultRWC;
@@ -44,6 +47,13 @@ constructor TWebCharts.Create;
 begin
 //  FModelHTML := TModelHTML.New;
   FCDN := False;
+  FModules := cAllJSModules;
+end;
+
+function TWebCharts.Modules(Value: TJSModules): iWebCharts;
+begin
+  Result := Self;
+  FModules := Value;
 end;
 function TWebCharts.Credenciais: iModelCredenciais;
 begin
@@ -102,6 +112,7 @@ begin
     .FolderDefaultRWC(FFolderDefaultRWC)
     .BackgroundColor(FBackgroundColor)
     .FontColor(FFontColor)
+    .Modules(FModules)
     .GenerateHead(FCss);
   Result.ContainerClass(FContainerClass);
 end;
@@ -118,6 +129,7 @@ begin
   Result
     .BackgroundColor(FBackgroundColor)
     .FontColor(FFontColor)
+    .Modules(FModules)
     .GenerateHead(FCss);
   Result.ContainerClass(FContainerClass);
   Result.FolderDefaultRWC(FFolderDefaultRWC);

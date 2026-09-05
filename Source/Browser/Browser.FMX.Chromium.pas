@@ -66,7 +66,7 @@ var
   key : String;
 begin
   if not Assigned(Value.CallBack) then
-    raise Exception.Create('Procedure para Callback inválida');
+    raise Exception.Create('Procedure para Callback invï¿½lida');
   key := vChromiumEvents.Resources.JSCallback.Add(Value.Callback);
   FChromium.ExecuteJavaScript(
    Value.ResultCommand + ';' +
@@ -101,7 +101,10 @@ begin
   FChromium.CreateBrowser(TempHandle, TempRect);
 
   while not FChromium.Initialized do
+  begin
     Application.ProcessMessages;
+    Sleep(1);
+  end;
   FChromium.loadURL(WEBCHART_PREAMBLE + Key);
 end;
 

@@ -91,7 +91,10 @@ begin
   FChromium.CreateBrowser(FWindowParent, '');
 
   while not FChromium.Initialized do
+  begin
     Application.ProcessMessages;
+    Sleep(1);
+  end;
   FChromium.loadURL(WEBCHART_PREAMBLE + Key);
 end;
 
