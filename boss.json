@@ -1,7 +1,7 @@
 {
 	"name": "TBGWebCharts",
 	"description": "Componente Delphi para criacao de graficos e dashboards (Chart.js, DataTables, PivotTable+Plotly, Google Maps, RichTextEditor, cards Bootstrap), com suporte a CEF, WebView2 e WebBrowser nativo.",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"homepage": "https://github.com/abagrobrasil/TBGWebCharts",
 	"mainsrc": "./Source",
 	"projects": [],
