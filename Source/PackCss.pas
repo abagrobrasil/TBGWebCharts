@@ -82,7 +82,11 @@ begin
   begin
     Result := Result + '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">';
 		Result := Result + '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/r-2.2.3/sl-1.3.1/datatables.min.css"/>';
-    Result := Result + '<link rel="stylesheet" type="text/css" href="https://thuliobittencourt.com/tbgwebcharts/pivotjs/dist/pivot.css">';
+    { thuliobittencourt.com/tbgwebcharts (host pessoal) fora do ar - 404
+      confirmado em 2026-09-05. Trocado pro mesmo host oficial que ja
+      serve o pivot.js (ver PivotTableJS.pas), pivottable.js.org - projeto
+      ativo, nao depende de ninguem pessoal. }
+    Result := Result + '<link rel="stylesheet" type="text/css" href="https://pivottable.js.org/dist/pivot.css">';
     Result := Result + '<link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">';
     Result := Result + TStyleCSS.New
                         .BackgroundColor(FBackgroundColor)

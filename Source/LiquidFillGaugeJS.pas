@@ -133,7 +133,13 @@ var
   I: Integer;
 begin
   if FCDN then
-    Result := '<script src="https://thuliobittencourt.com/tbgwebcharts/liquidFillGauge.min.js"></script>'
+    { thuliobittencourt.com/tbgwebcharts (host pessoal) fora do ar - 404
+      confirmado em 2026-09-05. Repo original (curtisbratton/
+      d3-liquid-fill-gauge) tambem nao existe mais no GitHub. Trocado por
+      um fork ativo (ugomeda/d3-liquid-fill-gauge, mesmo codigo/licenca),
+      via jsdelivr fixado num commit especifico (nao numa branch) pra nao
+      quebrar se o fork mudar depois. }
+    Result := '<script src="https://cdn.jsdelivr.net/gh/ugomeda/d3-liquid-fill-gauge@518c4802ca3daac6cc2531687d99412210cfaf7c/liquidFillGauge.js"></script>'
   else
   begin
     LiquidFillGauge_1;

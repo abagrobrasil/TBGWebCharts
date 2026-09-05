@@ -880,7 +880,11 @@ var
 begin
 
  if FCDN then
-  Result := ' <script src="https://thuliobittencourt.com/tbgwebcharts/quilldeltaconverter.js"></script>'
+  { thuliobittencourt.com/tbgwebcharts (host pessoal) fora do ar - 404
+    confirmado em 2026-09-05. Trocado pro pacote npm oficial via jsdelivr
+    (nozer/quill-delta-to-html) - bundle browser pronto, mesma global
+    QuillDeltaToHtmlConverter que o RichTextEditor.pas espera. }
+  Result := ' <script src="https://cdn.jsdelivr.net/npm/quill-delta-to-html@0.12.1/dist/browser/QuillDeltaToHtmlConverter.bundle.js"></script>'
  else
  begin
   GeneratePack_1;

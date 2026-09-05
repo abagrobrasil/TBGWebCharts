@@ -84,7 +84,10 @@ end;
 function TChartEasyPieJS.PackJS: String;
 begin
   if FCDN then
-    Result := '<script src="https://thuliobittencourt.com/tbgwebcharts/easypiechart.min.js"></script>'
+    { thuliobittencourt.com/tbgwebcharts (host pessoal) fora do ar - 404
+      confirmado em 2026-09-05. Trocado pro pacote npm oficial via
+      jsdelivr (rendro/easyPieChart). }
+    Result := '<script src="https://cdn.jsdelivr.net/npm/easy-pie-chart@2.1.7/dist/jquery.easypiechart.min.js"></script>'
   else
   begin
     ChartEasyPieJS_1;
