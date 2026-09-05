@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'TBGWebCharts - WebView2 Sample'
   ClientHeight = 433
-  ClientWidth = 689
+  ClientWidth = 794
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,7 +14,7 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 689
+    Width = 794
     Height = 392
     Align = alClient
     BevelOuter = bvNone
@@ -31,7 +31,7 @@ object Form1: TForm1
   object Panel2: TPanel
     Left = 0
     Top = 392
-    Width = 689
+    Width = 794
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
@@ -95,6 +95,16 @@ object Form1: TForm1
       Caption = 'Print'
       TabOrder = 5
       OnClick = Button5Click
+    end
+    object Button7: TButton
+      Left = 630
+      Top = 0
+      Width = 105
+      Height = 41
+      Align = alLeft
+      Caption = 'Table Demo'
+      TabOrder = 6
+      OnClick = Button7Click
     end
   end
   object WebCharts1: TWebCharts

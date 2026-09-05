@@ -14,6 +14,8 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
+  Data.DB,
+  Datasnap.DBClient,
   WebView2.WindowParent,
   View.WebCharts;
 
@@ -25,6 +27,7 @@ type
     Button4: TButton;
     Button5: TButton;
     Button6: TButton;
+    Button7: TButton;
     Panel1: TPanel;
     Panel2: TPanel;
     WebView2WindowParent1: TWebView2WindowParent;
@@ -35,8 +38,11 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
   strict private
     FContent: String;
+    FTableDataSet: TClientDataSet;
+    procedure EnsureTableDataSet;
   public
     procedure SaveContent(aValue: String);
     procedure SaveRichText(aValue: String);
@@ -112,6 +118,43 @@ begin
   .WebBrowser(WebView2WindowParent1)
     .RichTextEditor
     .LoadContent(FContent);
+end;
+
+{ Botao "Table Demo": exercita a feature Table (DataTables) via
+  IModelBrowser.Generated - render estatico, sem callback JS -> Delphi
+  (Table nao usa ExecuteScript/ExecuteScriptCallback, so HTML puro). }
+procedure TForm1.EnsureTableDataSet;
+begin
+  if Assigned(FTableDataSet) then
+    Exit;
+  FTableDataSet := TClientDataSet.Create(Self);
+  FTableDataSet.FieldDefs.Add('Nome', ftString, 40);
+  FTableDataSet.FieldDefs.Add('Cidade', ftString, 40);
+  FTableDataSet.FieldDefs.Add('Vendas', ftFloat);
+  FTableDataSet.CreateDataSet;
+  FTableDataSet.AppendRecord(['Ana', 'Curitiba', 1200.50]);
+  FTableDataSet.AppendRecord(['Bruno', 'Sao Paulo', 980.00]);
+  FTableDataSet.AppendRecord(['Carla', 'Recife', 1575.30]);
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+begin
+  EnsureTableDataSet;
+  WebCharts1
+  .CDN(true)
+  .NewProject
+    .Table
+      .TableClass
+        .tableSm
+        .tableHover
+        .tableStriped
+      .EndTableClass
+      .DataSet
+        .DataSet(FTableDataSet)
+      .&End
+    .&End
+  .WebBrowser(WebView2WindowParent1)
+  .Generated;
 end;
 
 procedure TForm1.SaveContent(aValue: String);
