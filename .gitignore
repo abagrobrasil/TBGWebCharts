@@ -80,3 +80,6 @@ PENDENCIA-WEBVIEW2-CDN-SCRIPTS.md
 
 # Saida intermediaria do tools/generate-vendor-bundle.ps1 (regeneravel, nao e' o Source final)
 tools/out/
+
+# Checklist de teste local (referencia caminho temp da sessao, uso local)
+CHECKLIST-TESTE-BOOTSTRAP5.md
