@@ -96,7 +96,7 @@ begin
     '<div class="col-6">' +
       GenerateTitle +
     '</div>' +
-    '<div class="col-6 text-right">' +
+    '<div class="col-6 text-end">' +
       GenerateValue +
       GenerateIcon +
     '</div>' +

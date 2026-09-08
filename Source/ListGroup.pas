@@ -77,7 +77,7 @@ begin
       ClassTypeComplement := ' d-flex justify-content-between align-items-center';
       if  FDataSet.RGBName <> '' then
         FColorBadge := FDataSet.DataSet.FieldByName(FDataSet.RGBName).AsString;
-      Badge := '<span class="badge badge-' + FColorBadge + ' badge-pill">'
+      Badge := '<span class="badge text-bg-' + FColorBadge + ' rounded-pill">'
       + FDataSet.DataSet.FieldByName(FDataSet.ValueName).AsString + '</span>';
     end;
     if FDataSet.CallbackLink.TryGetValue(FDataSet.LabelName, _MethodName) then

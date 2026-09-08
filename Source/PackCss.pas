@@ -80,8 +80,8 @@ function TPackCss.PackCSS: String;
 begin
   if FCDN then
   begin
-    Result := Result + '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">';
-		Result := Result + '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/r-2.2.3/sl-1.3.1/datatables.min.css"/>';
+    Result := Result + '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">';
+		Result := Result + '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.13.11/r-2.5.0/sl-1.7.0/datatables.min.css"/>';
     { thuliobittencourt.com/tbgwebcharts (host pessoal) fora do ar - 404
       confirmado em 2026-09-05. Trocado pro mesmo host oficial que ja
       serve o pivot.js (ver PivotTableJS.pas), pivottable.js.org - projeto

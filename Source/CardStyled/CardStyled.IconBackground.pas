@@ -188,7 +188,7 @@ begin
           '<div class="col-7">' +
             GenerateBody +
           '</div>' +
-          '<div class="col-5 text-right">' +
+          '<div class="col-5 text-end">' +
             GenerateFooter +
           '</div>' +
         '</div>' +

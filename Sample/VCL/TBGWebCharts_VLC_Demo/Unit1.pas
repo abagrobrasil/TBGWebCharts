@@ -619,7 +619,7 @@ begin
               .&End
             .&End
             .Footer
-              .Text('5 desistências')
+              .Text('5 desistï¿½ncias')
               .Style
                 .FontSize(15)
               .&End
@@ -638,7 +638,7 @@ begin
             .BackgroundColor('linear-gradient(87deg,#57D1EB,#2B8A9E)')
             .DefaultFontColor('255,255,255')
             .Title
-              .Text('Usuários')
+              .Text('Usuï¿½rios')
               .Style
                 .FontSize(15)
               .&End
@@ -650,7 +650,7 @@ begin
               .&End
             .&End
             .Footer
-              .Text('5 acessos simultâneos')
+              .Text('5 acessos simultï¿½neos')
               .Style
                 .FontSize(15)
               .&End
@@ -702,7 +702,7 @@ begin
             .&End
             .Callback
               .MethodName('CallBack')
-              .ParamValue('Card Usuários R$ 56,58')
+              .ParamValue('Card Usuï¿½rios R$ 56,58')
             .&End
           .&End
         .&End
@@ -724,7 +724,7 @@ begin
               .&End
             .&End
             .Footer
-              .Text('5 desistências')
+              .Text('5 desistï¿½ncias')
               .Style
                 .FontSize(15)
               .&End
@@ -737,7 +737,7 @@ begin
             .&End
             .Callback
               .MethodName('CallBack')
-              .ParamValue('Card Usuários 15%')
+              .ParamValue('Card Usuï¿½rios 15%')
             .&End
           .&End
         .&End
@@ -747,7 +747,7 @@ begin
             .BackgroundColor('linear-gradient(87deg,#f5365c,#f56036)')
             .DefaultFontColor('255,255,255')
             .Title
-              .Text('Usuários')
+              .Text('Usuï¿½rios')
               .Style
                 .FontSize(15)
               .&End
@@ -759,7 +759,7 @@ begin
               .&End
             .&End
             .Footer
-              .Text('5 acessos simultâneos')
+              .Text('5 acessos simultï¿½neos')
               .Style
                 .FontSize(15)
               .&End
@@ -772,7 +772,7 @@ begin
             .&End
             .Callback
               .MethodName('CallBack')
-              .ParamValue('Card Usuários 15')
+              .ParamValue('Card Usuï¿½rios 15')
             .&End
           .&End
         .&End
@@ -827,8 +827,8 @@ begin
     .Jumpline
     .Jumpline
     .Jumbotron
-      .Title('Título')
-      .Description('Descrição')
+      .Title('Tï¿½tulo')
+      .Description('Descriï¿½ï¿½o')
     .&End
   .WebBrowser(WebBrowser1)
   .Generated;
@@ -1078,7 +1078,7 @@ begin
           .CallBackLink('CallBack')
           .Name('Meu Grafico de Barras')
           .ColSpan(12)
-          //.Title('Meu Gráfico de Barras')
+          //.Title('Meu Grï¿½fico de Barras')
           .DataSet
             .TextLabel('Meu DataSet 1')
             .DataSet(ClientDataSet1)
@@ -1175,7 +1175,7 @@ begin
                 .XAxe
                   .ScaleLabel
                     .Display(True)
-                    .LabelString('Faturamento por Mês')
+                    .LabelString('Faturamento por Mï¿½s')
                   .&End
                 .&End
                 .YAxe
@@ -1220,7 +1220,7 @@ begin
           .&End
           .Name('Meu Grafico de Barras')
           .ColSpan(12)
-          //.Title('Meu Gráfico de Barras')
+          //.Title('Meu Grï¿½fico de Barras')
           .DataSet
             .TextLabel('Meu DataSet 1')
             .DataSet(ClientDataSet1)
@@ -1255,7 +1255,7 @@ begin
         .Attributes
           .Name('Meu Grafico de Barras')
           .ColSpan(12)
-          //.Title('Meu Gráfico de Barras')
+          //.Title('Meu Grï¿½fico de Barras')
           .DataSet
             .TextLabel('Meu DataSet 1')
             .DataSet(ClientDataSet1)
@@ -1648,7 +1648,7 @@ begin
     .Charts
       ._ChartType(doughnut)
         .Attributes
-          .Name('Meu Grafico Semicírculo')
+          .Name('Meu Grafico Semicï¿½rculo')
           .ColSpan(12)
           .Options
             .SemiCircule(True)
@@ -1690,7 +1690,7 @@ begin
             .Name('analiseMensal')
             .Heigth(80)
             .DataSet
-              .TextLabel('Saídas')
+              .TextLabel('Saï¿½das')
               .DataSet(ClientDataSet1)
             .&End
           .&End
@@ -1910,7 +1910,7 @@ begin
       .&End
 
 //
-      //Adicionando uma nova linha com um gráfico LineStack e Barras Horizontal
+      //Adicionando uma nova linha com um grï¿½fico LineStack e Barras Horizontal
       .Rows
         //Adicionando Grafico LineStacked
         .Tag
@@ -2162,7 +2162,7 @@ begin
                           .Display(False)
                         .&End
                         .Title
-                          .Text('Entrada x Saída')
+                          .Text('Entrada x Saï¿½da')
                           .Display(True)
                           .Position('top')
                           .FontColorHEX('#a6a7aa')
@@ -2171,7 +2171,7 @@ begin
                         .&End
                       .&End
                       .DataSet
-                        .TextLabel('Entrada x Saída')
+                        .TextLabel('Entrada x Saï¿½da')
                         .DataSet(ClientDataSet10)
                       .&End
                     .&End
@@ -2196,7 +2196,7 @@ begin
                             .Display(False)
                           .&End
                           .Title
-                            .Text('Mídias Sociais')
+                            .Text('Mï¿½dias Sociais')
                             .Display(True)
                             .Position('top')
                             .FontColorHEX('#a6a7aa')
@@ -2231,7 +2231,7 @@ begin
                     .ColSpan(12)
                     .Options
                       .Title
-                        .Text('Mídias Sociais')
+                        .Text('Mï¿½dias Sociais')
                         .Display(True)
                         .Position('top')
                         .FontColorHEX('#a6a7aa')
@@ -2341,7 +2341,7 @@ begin
             WebCharts1
               .ContinuosProject
                 .Alerts
-                  .Title('Vendas do Mês em Andamento')
+                  .Title('Vendas do Mï¿½s em Andamento')
                   .AlertsClass
                     .Primary
                   .&End
@@ -2353,19 +2353,19 @@ begin
                   .&End
                 .&End
                 .Alerts
-                  .Title('Volume de Vendas Acima da Média')
+                  .Title('Volume de Vendas Acima da Mï¿½dia')
                   .AlertsClass
                     .Success
                   .&End
                 .&End
                 .Alerts
-                  .Title('Volume de Vendas Abaixo da Média')
+                  .Title('Volume de Vendas Abaixo da Mï¿½dia')
                   .AlertsClass
                     .Danger
                   .&End
                 .&End
                 .Alerts
-                  .Title('Volume de Vendas na Média')
+                  .Title('Volume de Vendas na Mï¿½dia')
                   .AlertsClass
                     .Warning
                   .&End
@@ -2383,7 +2383,7 @@ begin
                   .&End
                 .&End
                 .Alerts
-                  .Title('Existem Vendas não Transmitidas')
+                  .Title('Existem Vendas nï¿½o Transmitidas')
                   .AlertsClass
                     .Dark
                   .&End
@@ -2432,7 +2432,7 @@ begin
                '</span>' +
                '<div class="count" > 121.223,44</div>' +
                '<span class="count_bottom"> ' +
-               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mês Atual' +
+               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mï¿½s Atual' +
                '</span> ' +
                '</div>' )
         .&End
@@ -2444,7 +2444,7 @@ begin
                '</span>' +
                '<div class="count">138.000,00</div>' +
                '<span class="count_bottom"> ' +
-               '  <i class="green"><i class="fa fa-angle-down"></i></i> Mês Anterior' +
+               '  <i class="green"><i class="fa fa-angle-down"></i></i> Mï¿½s Anterior' +
                '</span> ' +
                '</div>' )
         .&End
@@ -2452,11 +2452,11 @@ begin
           .ColSpan(2)
           .Add('<div class="box""> ' +
                '<span class="count_top">' +
-               '  <i class="far fa-money-bill-alt"></i> Valor Peças ' +
+               '  <i class="far fa-money-bill-alt"></i> Valor Peï¿½as ' +
                '</span>' +
                '<div class="count">45.123,45</div>' +
                '<span class="count_bottom"> ' +
-               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mês Atual' +
+               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mï¿½s Atual' +
                '</span> ' +
                '</div>' )
         .&End
@@ -2464,11 +2464,11 @@ begin
           .ColSpan(2)
           .Add('<div class="box" > ' +
                '<span class="count_top">' +
-               '  <i class="fas fa-clock fa-1x"></i> Valor Serviços ' +
+               '  <i class="fas fa-clock fa-1x"></i> Valor Serviï¿½os ' +
                '</span>' +
                '<div class="count">125.345,56</div>' +
                '<span class="count_bottom"> ' +
-               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mês Atual' +
+               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mï¿½s Atual' +
                '</span> ' +
                '</div>' )
         .&End
@@ -2476,11 +2476,11 @@ begin
           .ColSpan(2)
           .Add('<div class="box"> ' +
                '<span class="count_top">' +
-               '  <i class="fas fa-wrench"></i> Serviço Terceiro ' +
+               '  <i class="fas fa-wrench"></i> Serviï¿½o Terceiro ' +
                '</span>' +
                '<div class="count">5.445,24</div>' +
                '<span class="count_bottom"> ' +
-               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mês Atual' +
+               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mï¿½s Atual' +
                '</span> ' +
                '</div>' )
         .&End
@@ -2492,7 +2492,7 @@ begin
                '</span>' +
                '<div class="count">198.345,22</div>' +
                '<span class="count_bottom"> ' +
-               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mês Atual' +
+               '  <i class="green"><i class="fa fa-angle-up"></i></i> Mï¿½s Atual' +
                '</span> ' +
                '</div>' )
         .&End
@@ -3045,23 +3045,23 @@ begin
           '<ul class="list-group">' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Cras justo odio' +
-          '<span class="badge badge-primary badge-pill">$ 14.256,23</span>' +
+          '<span class="badge text-bg-primary rounded-pill">$ 14.256,23</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Dapibus ac facilisis' +
-          '<span class="badge badge-primary badge-pill">$ 236,22</span>' +
+          '<span class="badge text-bg-primary rounded-pill">$ 236,22</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-success badge-pill">#1</span>' +
+          '<span class="badge text-bg-success rounded-pill">#1</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-danger badge-pill">-561</span>' +
+          '<span class="badge text-bg-danger rounded-pill">-561</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-warning badge-pill">1</span>' +
+          '<span class="badge text-bg-warning rounded-pill">1</span>' +
           '</li>' +
           '</ul>')
       .&End
@@ -3075,23 +3075,23 @@ begin
           '<ul class="list-group">' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Cras justo odio' +
-          '<span class="badge badge-light badge-pill">$ 14.256,23</span>' +
+          '<span class="badge text-bg-light rounded-pill">$ 14.256,23</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Dapibus ac facilisis' +
-          '<span class="badge badge-light badge-pill">$ 236,22</span>' +
+          '<span class="badge text-bg-light rounded-pill">$ 236,22</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-light badge-pill">#1</span>' +
+          '<span class="badge text-bg-light rounded-pill">#1</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-light badge-pill">-561</span>' +
+          '<span class="badge text-bg-light rounded-pill">-561</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-light badge-pill">1</span>' +
+          '<span class="badge text-bg-light rounded-pill">1</span>' +
           '</li>' +
           '</ul>')
       .&End

@@ -420,7 +420,7 @@ begin
             .CallBackLink('CallBack')
             .Name('My bar chart')
             .ColSpan(12)
-            //.Title('Meu Gráfico de Barras')
+            //.Title('Meu Grï¿½fico de Barras')
             .DataSet
               .TextLabel('My DataSet 1')
               .DataSet(ClientDataSet1)
@@ -472,7 +472,7 @@ begin
           .&End
           .Name('My bar chart')
           .ColSpan(12)
-          //.Title('Meu Gráfico de Barras')
+          //.Title('Meu Grï¿½fico de Barras')
           .DataSet
             .TextLabel('My DataSet 1')
             .DataSet(ClientDataSet1)
@@ -723,23 +723,23 @@ begin
           '<ul class="list-group">' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Cras justo odio' +
-          '<span class="badge badge-primary badge-pill">$ 14.256,23</span>' +
+          '<span class="badge text-bg-primary rounded-pill">$ 14.256,23</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Dapibus ac facilisis' +
-          '<span class="badge badge-primary badge-pill">$ 236,22</span>' +
+          '<span class="badge text-bg-primary rounded-pill">$ 236,22</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-success badge-pill">#1</span>' +
+          '<span class="badge text-bg-success rounded-pill">#1</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-danger badge-pill">-561</span>' +
+          '<span class="badge text-bg-danger rounded-pill">-561</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-warning badge-pill">1</span>' +
+          '<span class="badge text-bg-warning rounded-pill">1</span>' +
           '</li>' +
           '</ul>')
       .&End
@@ -753,23 +753,23 @@ begin
           '<ul class="list-group">' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Cras justo odio' +
-          '<span class="badge badge-light badge-pill">$ 14.256,23</span>' +
+          '<span class="badge text-bg-light rounded-pill">$ 14.256,23</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Dapibus ac facilisis' +
-          '<span class="badge badge-light badge-pill">$ 236,22</span>' +
+          '<span class="badge text-bg-light rounded-pill">$ 236,22</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-light badge-pill">#1</span>' +
+          '<span class="badge text-bg-light rounded-pill">#1</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-light badge-pill">-561</span>' +
+          '<span class="badge text-bg-light rounded-pill">-561</span>' +
           '</li>' +
           '<li class="list-group-item d-flex justify-content-between align-items-center">' +
           'Morbi leo risus' +
-          '<span class="badge badge-light badge-pill">1</span>' +
+          '<span class="badge text-bg-light rounded-pill">1</span>' +
           '</li>' +
           '</ul>')
       .&End
@@ -1300,7 +1300,7 @@ begin
         .Attributes
           .Name('My bar chart')
           .ColSpan(12)
-          //.Title('Meu Gráfico de Barras')
+          //.Title('Meu Grï¿½fico de Barras')
           .DataSet
             .TextLabel('My DataSet 1')
             .DataSet(ClientDataSet1)
@@ -1789,7 +1789,7 @@ begin
       .&End
       //Pulando Linha
       .Jumpline
-      //Adicionando uma nova linha com um gráfico LineStack e Barras Horizontal
+      //Adicionando uma nova linha com um grï¿½fico LineStack e Barras Horizontal
       .Rows
         //Adicionando Grafico LineStacked
         .Tag

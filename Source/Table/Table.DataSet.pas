@@ -178,7 +178,7 @@ begin
           case FDataSet.Fields[X].DataType of
             ftFloat,ftCurrency, ftBCD, ftFMTBcd, ftExtended:
             Begin
-               _tdClass := 'text-right';
+               _tdClass := 'text-end';
                _value := FormatFloat(TFloatField(FDataSet.Fields[X]).DisplayFormat, FDataSet.FieldByName(FDataSet.Fields[x].FieldName).AsFloat) ;
             end else
                _value := FDataSet.FieldByName(FDataSet.Fields[X].FieldName).AsString;

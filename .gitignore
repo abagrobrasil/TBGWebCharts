@@ -77,3 +77,6 @@ EBWebView/
 # Notas internas de evolucao do projeto (uso local, nao versionar)
 EVOLUCAO.md
 PENDENCIA-WEBVIEW2-CDN-SCRIPTS.md
+
+# Saida intermediaria do tools/generate-vendor-bundle.ps1 (regeneravel, nao e' o Source final)
+tools/out/
