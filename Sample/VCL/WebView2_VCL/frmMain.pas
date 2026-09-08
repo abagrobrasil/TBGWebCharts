@@ -18,6 +18,7 @@ uses
   Datasnap.DBClient,
   WebView2.WindowParent,
   JSModules,
+  Interfaces,
   View.WebCharts;
 
 type
@@ -75,11 +76,19 @@ implementation
   sintoma exato documentado em PENDENCIA-WEBVIEW2-CDN-SCRIPTS.md. Fix em
   View.WebCharts.pas (Create agora e override de Create(AOwner), roda
   sempre). Este botao volta a .CDN(true) pra confirmar que o Quill
-  renderiza certo de novo. }
+  renderiza certo de novo.
+  .Modules(cAllJSModules) explicito (2026-09-08): FModules e campo do
+  COMPONENTE (WebCharts1), setado uma unica vez no construtor e nunca
+  resetado em NewProject - .Modules(...) e "sticky" entre cliques.
+  Botao8 (Phosphor Demo) restringe FModules pra so 4 libs; sem este
+  reset explicito, clicar Generate DEPOIS do Phosphor Demo gera HTML
+  sem jsQuillEditor (editor nao renderiza) - achado testando o upgrade
+  do Bootstrap, sem relacao com ele. }
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   WebCharts1
   .CDN(true)
+  .Modules(cAllJSModules)
   .NewProject
     .RichTextEditor
       .Attributes
@@ -167,7 +176,8 @@ procedure TForm1.Button7Click(Sender: TObject);
 begin
   EnsureTableDataSet;
   WebCharts1
-  .CDN(true)
+  .CDN(false)
+  .Modules(cAllJSModules)
   .NewProject
     .Table
       .TableClass
@@ -209,7 +219,7 @@ end;
 procedure TForm1.Button8Click(Sender: TObject);
 begin
   WebCharts1
-  .CDN(true)
+  .CDN(false)
   .Modules([jsBootstrap, jsJQuery, jsPopper, jsPhosphorIcons])
   .NewProject
     .Rows

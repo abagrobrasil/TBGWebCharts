@@ -62,6 +62,21 @@ begin
   FModules := cAllJSModules;
 end;
 
+{ ATENCAO (2026-09-08): FModules e' campo do COMPONENTE, setado uma unica
+  vez com cAllJSModules no construtor - este metodo o sobrescreve de
+  forma PERSISTENTE, sem reset automatico em NewProject. Se o mesmo
+  WebCharts1 (instancia unica, ex.: form com varios botoes) chamar
+  .Modules([subset restrito]) numa geracao e DEPOIS gerar outra pagina
+  sem chamar .Modules(...) de novo, essa segunda pagina herda o subset
+  restrito da chamada anterior (nao volta pro default cAllJSModules).
+  Sintoma real ja visto: botao que restringe pra so 4 libs "vaza" pro
+  proximo botao clicado, que perde silenciosamente uma lib que esperava
+  ter (ex.: jsQuillEditor sumindo do Generate depois do Phosphor Demo -
+  ver Sample/VCL/WebView2_VCL/frmMain.pas). Decisao (2026-09-08): manter
+  esse comportamento (e' o padrao de property de componente VCL, mudar
+  quebraria quem depende do FModules ficar setado entre chamadas) - quem
+  consome a lib deve chamar .Modules(cAllJSModules) explicitamente antes
+  de cada NewProject que espera o conjunto default. }
 function TWebCharts.Modules(Value: TJSModules): iWebCharts;
 begin
   Result := Self;

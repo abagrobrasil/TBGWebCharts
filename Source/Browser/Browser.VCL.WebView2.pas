@@ -42,10 +42,22 @@ uses
   CallBackJS;
 
 const
-  { Limite documentado do NavigateToString e ~2.097.152 chars (2MB).
-    NavigateToString e o caminho PRINCIPAL agora (comprovadamente
-    confiavel - e o que sempre funcionou aqui) pra qualquer HTML que
-    caiba nele; so paginas maiores usam NavigateToHtml (URL virtual +
+  { Limite documentado do NavigateToString e ~2.097.152 chars (2MB), mas
+    NA PRATICA (2026-09-08, WebView2_VCL sample, apos upgrade Bootstrap
+    4->5 que engordou o bundle offline) a chamada COM falha bem antes
+    disso: HResult=0x80070057 (E_INVALIDARG) navegando com 1.724.102
+    chars - o valor antigo desta constante (1.900.000) nunca protegia
+    de verdade contra esse caso. Pior: o codigo original NAO checava o
+    HResult de retorno do NavigateToString (ver Generated abaixo), entao
+    essa falha nao gerava excecao nem qualquer sinal - so "nao acontece
+    nada", nem no DevTools (Phosphor Demo, CDN(false), reportado pelo
+    usuario). Como so temos 2 pontos reais (~1.2MB funcionava antes do
+    upgrade, 1.724.102 falha agora), o valor foi baixado bem abaixo dos
+    dois com margem de seguranca, em vez de tentar achar o teto exato -
+    NavigateToHtml nao tem esse problema (ja comprovado ate 4.6M chars,
+    Table Demo) entao nao ha custo real em mandar mais paginas por ele.
+    NavigateToString e o caminho PRINCIPAL pra qualquer HTML que caiba
+    nele; so paginas maiores usam NavigateToHtml (URL virtual +
     WebResourceRequested, ver WebView2.WindowParent.pas). Motivo de nao
     usar NavigateToHtml sempre (o que eliminaria esse teto de vez):
     2026-09-05, descoberto com o sample real, que paginas com MUITOS
@@ -55,10 +67,8 @@ const
     3 hipoteses testadas e descartadas uma a uma). Paginas CDN(true) sao
     sempre pequenas (poucos KB, so tags script/link) e nunca esbarram
     nesse teto mesmo, entao NavigateToString sozinho ja resolve esse
-    caso; NavigateToHtml fica so pra quando o HTML e grande de verdade
-    (tipicamente CDN(false), sem scripts externos - onde ja confirmamos
-    funcionando: Table Demo e Phosphor Demo, ~1.2MB). }
-  cNavigateToStringMaxChars = 1900000;
+    caso. }
+  cNavigateToStringMaxChars = 500000;
 
 function BuildResultExpression(const Value: iModelJSCommand): string;
 begin
@@ -214,11 +224,22 @@ begin
 end;
 
 function TModelBrowserVCLWebView2.Generated(FHTML: string): iModelBrowser;
+var
+  Hr: HResult;
 begin
   Result := Self;
   WaitReady;
   if Length(FHTML) <= cNavigateToStringMaxChars then
-    FWindowParent.CoreWebView2.NavigateToString(PWideChar(FHTML))
+  begin
+    { NavigateToString retorna HResult mas o codigo original ignorava o
+      valor - uma falha silenciosa da chamada COM (ex.: conteudo grande
+      demais pro limite real, que pode ser mais baixo que os
+      cNavigateToStringMaxChars assumidos) nao gerava excecao nem
+      qualquer sinal, so parecia "nao acontece nada" (nem no DevTools). }
+    Hr := FWindowParent.CoreWebView2.NavigateToString(PWideChar(FHTML));
+    if Hr <> S_OK then
+      raise Exception.CreateFmt('NavigateToString (WebView2) falhou com HResult=%.8x (HTML tem %d caracteres).', [Cardinal(Hr), Length(FHTML)]);
+  end
   else
     { So entra aqui pra HTML grande de verdade (tipicamente CDN(false)).
       Serve via URL virtual interceptada (WebResourceRequested) - ver
