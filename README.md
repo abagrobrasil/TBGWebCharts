@@ -82,9 +82,9 @@ end;
 
 Um exemplo completo está em [Sample/VCL/WebView2_VCL](Sample/VCL/WebView2_VCL).
 
-> **Limitação conhecida**: no backend WebView2, `.CDN(true)` em páginas com muitos `<script src>` externos (ex.: `RichTextEditor`, que carrega o Quill via CDN) tem um bug não resolvido — os scripts externos são silenciosamente ignorados e o editor não renderiza. Use `.CDN(false)` pro `RichTextEditor` nesse backend até isso ser corrigido. Recursos que só usam `<link rel="stylesheet">` (como os ícones via CDN abaixo) não são afetados.
+> **Nota histórica**: uma versão anterior deste README documentava aqui um bug de `.CDN(true)` no WebView2 (scripts externos supostamente ignorados). A causa raiz era outra: `TWebCharts.Create` não rodava pra componentes soltos no formulário, deixando `FModules` vazio — corrigido, não é mais necessário evitar `.CDN(true)`.
 >
-> **Known limitation**: on the WebView2 backend, `.CDN(true)` on pages with many external `<script src>` tags (e.g. `RichTextEditor`, which loads Quill via CDN) has an unresolved bug — external scripts are silently ignored and the editor fails to render. Use `.CDN(false)` for `RichTextEditor` on this backend until it's fixed. Features that only use `<link rel="stylesheet">` (like CDN icons below) are not affected.
+> **Historical note**: an earlier version of this README documented a `.CDN(true)` bug on WebView2 here (external scripts supposedly ignored). The real root cause was different: `TWebCharts.Create` never ran for form-dropped components, leaving `FModules` empty — fixed, no need to avoid `.CDN(true)` anymore.
 
 ## 👻 Ícones: Font Awesome ou Phosphor Icons / Icons: Font Awesome or Phosphor Icons
 
@@ -116,3 +116,31 @@ WebCharts1
   .NewProject
     // ...
 ```
+
+## 📊 Alinhamento de texto na Table / Table text alignment
+
+Por padrão, a `Table` (DataTables) alinha número à direita automaticamente (campos `ftFloat`/`ftCurrency`/etc.) e deixa o resto sem classe — sem jeito de escolher manualmente. `TextAlignHead`/`TextAlignBody` (em `DataSet`) permitem forçar o alinhamento pra tabela inteira (cabeçalho e corpo), usando os valores do Bootstrap 5 via `TTextAlign` (`Source/Table/Table.Tipos.pas`, precisa de `uses Table.Tipos;`):
+
+By default, `Table` (DataTables) auto-aligns numbers to the right (`ftFloat`/`ftCurrency`/etc. fields) and leaves everything else unstyled — no manual control. `TextAlignHead`/`TextAlignBody` (on `DataSet`) let you force alignment for the whole table (header and body), using Bootstrap 5's values via `TTextAlign` (`Source/Table/Table.Tipos.pas`, requires `uses Table.Tipos;`):
+
+```pascal
+uses Table.Tipos; // TTextAlign
+
+WebCharts1
+  .NewProject
+    .Table
+      .DataSet
+        .DataSet(MyDataSet)
+        .TextAlignHead(taCenter)
+        .TextAlignBody(taCenter)
+      .&End
+    .&End
+  .WebBrowser(WebView2WindowParent1)
+  .Generated;
+```
+
+- `taDefault` (padrão/default): comportamento de sempre — número alinha à direita sozinho, resto sem classe.
+- `taStart` / `taCenter` / `taEnd`: força `text-start`/`text-center`/`text-end` em **toda** célula (cabeçalho e/ou corpo, dependendo de qual dos dois métodos você chamar), sobrescrevendo o alinhamento automático de número.
+
+`taDefault` (default): usual behavior — numbers auto-align right, everything else unstyled.
+`taStart` / `taCenter` / `taEnd`: forces `text-start`/`text-center`/`text-end` on **every** cell (header and/or body, depending on which of the two methods you call), overriding the automatic number alignment.

@@ -236,6 +236,7 @@
         <DCCReference Include="Source\Browser\WebView2.Api.pas"/>
         <DCCReference Include="Source\Browser\WebView2.WindowParent.pas"/>
         <DCCReference Include="Source\Browser\Browser.VCL.WebView2.pas"/>
+        <DCCReference Include="Source\Table\Table.Tipos.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

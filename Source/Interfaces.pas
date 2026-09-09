@@ -47,6 +47,7 @@ uses
    Classes,
    Charts.Types,
    JSModules,
+   Table.Tipos,
    Colors.Bootstrap;
 
 type
@@ -1339,6 +1340,15 @@ type
     function DataSet(Value: TDataSet): IModelTableDataSet;
     function ResultScript: string;
     function ResultStyle: string;
+    { Alinhamento de texto pra tabela inteira (cabecalho/corpo) - taDefault
+      preserva o comportamento atual (numero alinha a direita sozinho, resto
+      sem classe); os outros valores forcam a classe do Bootstrap em toda
+      celula. Ver TTextAlign em Table.Tipos.pas.
+      Declarados ao FINAL da interface de proposito (mesma regra do
+      IModelTableActionImage.IconClass acima: Delphi despacha por posicao
+      na vtable, inserir no meio quebraria pacote ja compilado). }
+    function TextAlignHead(Value: TTextAlign): IModelTableDataSet;
+    function TextAlignBody(Value: TTextAlign): IModelTableDataSet;
   end;
 
   IModelTableActionImage = Interface(IInterface)

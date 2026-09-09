@@ -3,7 +3,7 @@ unit Table.DataSet;
 interface
 
 uses
-  Interfaces, DB, Classes, Generics.Collections;
+  Interfaces, DB, Classes, Generics.Collections, Table.Tipos;
 
 Type
   TCallBackContent = Record
@@ -19,6 +19,8 @@ Type
       FDataSet : TDataSet;
       FAction : TList<iModelTableAction>;
       FCallbackLink  : TDictionary<string, TCallBackContent>;
+      FTextAlignHead : TTextAlign;
+      FTextAlignBody : TTextAlign;
     public
       constructor Create(Parent : iModelTable);
       destructor Destroy; override;
@@ -32,6 +34,8 @@ Type
       function ResultScript : String;
       function ResultStyle : String;
       function &End : iModelTable;
+      function TextAlignHead(Value : TTextAlign) : iModelTableDataSet;
+      function TextAlignBody(Value : TTextAlign) : iModelTableDataSet;
   end;
 
 implementation
@@ -119,6 +123,20 @@ begin
   {$IFEND}
   FCallbackLink := TDictionary<string, TCallBackContent>.Create;
   FAction := TList<iModelTableAction>.Create;
+  FTextAlignHead := taDefault;
+  FTextAlignBody := taDefault;
+end;
+
+function TModelTableDataSet.TextAlignHead(Value: TTextAlign): iModelTableDataSet;
+begin
+  Result := Self;
+  FTextAlignHead := Value;
+end;
+
+function TModelTableDataSet.TextAlignBody(Value: TTextAlign): iModelTableDataSet;
+begin
+  Result := Self;
+  FTextAlignBody := Value;
 end;
 
 function TModelTableDataSet.DataSet(Value: TDataSet): iModelTableDataSet;
@@ -146,20 +164,23 @@ var
   J: Integer;
   _MethodName : TCallBackContent;
   _tdClass : String;
+  _thClass : String;
 
   _value : String;
 begin
+  _thClass := TextAlignClass(FTextAlignHead);
+
   Result := '';
   Result := Result + '<thead>';
   Result := Result + '<tr>';
   for I := 0 to Pred(FDataSet.Fields.Count) do
   begin
         if FDataSet.Fields[I].Visible <> false then
-           Result := Result + '<th scope="col">'+FDataSet.Fields[I].DisplayName+'</th>';
+           Result := Result + '<th scope="col" class="'+_thClass+'">'+FDataSet.Fields[I].DisplayName+'</th>';
   end;
 
   for I := 0 to Pred(FAction.Count) do
-    Result := Result + '<th scope="col">'+FAction[I].ActionHeader+'</th>';
+    Result := Result + '<th scope="col" class="'+_thClass+'">'+FAction[I].ActionHeader+'</th>';
 
   Result := Result + '</tr>';
   Result := Result + '</thead>';
@@ -183,6 +204,10 @@ begin
             end else
                _value := FDataSet.FieldByName(FDataSet.Fields[X].FieldName).AsString;
           end;
+          { TextAlignBody explicito sobrescreve o auto-alinhamento numerico
+            acima (default taDefault preserva o comportamento de sempre). }
+          if FTextAlignBody <> taDefault then
+            _tdClass := TextAlignClass(FTextAlignBody);
 
           if FCallbackLink.TryGetValue(FDataSet.Fields[X].FieldName,_MethodName) then
               Result := Result + '<td class="' + _tdClass + '"><a href="ActionCallBackJS:' + _MethodName.FMethod + '(' + TIdEncoderMIME.EncodeString(FDataSet.FieldByName(_MethodName.FValue).AsString) + ')">' + FDataSet.FieldByName(_MethodName.FField).AsString + '</a></td>'
