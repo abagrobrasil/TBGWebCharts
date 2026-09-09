@@ -123,8 +123,8 @@ begin
   {$IFEND}
   FCallbackLink := TDictionary<string, TCallBackContent>.Create;
   FAction := TList<iModelTableAction>.Create;
-  FTextAlignHead := taDefault;
-  FTextAlignBody := taDefault;
+  FTextAlignHead := TTextAlign.taDefault;
+  FTextAlignBody := TTextAlign.taDefault;
 end;
 
 function TModelTableDataSet.TextAlignHead(Value: TTextAlign): iModelTableDataSet;
@@ -206,7 +206,7 @@ begin
           end;
           { TextAlignBody explicito sobrescreve o auto-alinhamento numerico
             acima (default taDefault preserva o comportamento de sempre). }
-          if FTextAlignBody <> taDefault then
+          if FTextAlignBody <> TTextAlign.taDefault then
             _tdClass := TextAlignClass(FTextAlignBody);
 
           if FCallbackLink.TryGetValue(FDataSet.Fields[X].FieldName,_MethodName) then

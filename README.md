@@ -131,16 +131,20 @@ WebCharts1
     .Table
       .DataSet
         .DataSet(MyDataSet)
-        .TextAlignHead(taCenter)
-        .TextAlignBody(taCenter)
+        .TextAlignHead(TTextAlign.taCenter)
+        .TextAlignBody(TTextAlign.taCenter)
       .&End
     .&End
   .WebBrowser(WebView2WindowParent1)
   .Generated;
 ```
 
-- `taDefault` (padrão/default): comportamento de sempre — número alinha à direita sozinho, resto sem classe.
-- `taStart` / `taCenter` / `taEnd`: força `text-start`/`text-center`/`text-end` em **toda** célula (cabeçalho e/ou corpo, dependendo de qual dos dois métodos você chamar), sobrescrevendo o alinhamento automático de número.
+> `TTextAlign` é um *scoped enum* (`{$SCOPEDENUMS ON}`) de propósito — sem isso, `taCenter` vazaria pro namespace global (via `Interfaces.pas`, usado por tudo) e colidiria com o `TAlignment.taCenter` padrão da VCL. Por isso sempre `TTextAlign.taCenter`, nunca só `taCenter`.
+>
+> `TTextAlign` is a *scoped enum* (`{$SCOPEDENUMS ON}`) on purpose — without it, `taCenter` would leak into the global namespace (via `Interfaces.pas`, used by everything) and collide with VCL's own `TAlignment.taCenter`. Always `TTextAlign.taCenter`, never bare `taCenter`.
 
-`taDefault` (default): usual behavior — numbers auto-align right, everything else unstyled.
-`taStart` / `taCenter` / `taEnd`: forces `text-start`/`text-center`/`text-end` on **every** cell (header and/or body, depending on which of the two methods you call), overriding the automatic number alignment.
+- `TTextAlign.taDefault` (padrão/default): comportamento de sempre — número alinha à direita sozinho, resto sem classe.
+- `TTextAlign.taStart` / `.taCenter` / `.taEnd`: força `text-start`/`text-center`/`text-end` em **toda** célula (cabeçalho e/ou corpo, dependendo de qual dos dois métodos você chamar), sobrescrevendo o alinhamento automático de número.
+
+`TTextAlign.taDefault` (default): usual behavior — numbers auto-align right, everything else unstyled.
+`TTextAlign.taStart` / `.taCenter` / `.taEnd`: forces `text-start`/`text-center`/`text-end` on **every** cell (header and/or body, depending on which of the two methods you call), overriding the automatic number alignment.
