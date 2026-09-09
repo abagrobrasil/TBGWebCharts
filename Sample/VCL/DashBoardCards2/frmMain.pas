@@ -18,7 +18,7 @@ uses
   Data.DB,
   Datasnap.DBClient,
   View.WebCharts,
-  SHDocVw;
+  SHDocVw, WebView2.WindowParent;
 
 type
   TForm11 = class(TForm)
@@ -32,8 +32,8 @@ type
     ClientDataSet2: TClientDataSet;
     Panel1: TPanel;
     Panel2: TPanel;
-    WebBrowser1: TWebBrowser;
     WebCharts1: TWebCharts;
+    WebView2WindowParent1: TWebView2WindowParent;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -206,7 +206,7 @@ begin
         )
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 

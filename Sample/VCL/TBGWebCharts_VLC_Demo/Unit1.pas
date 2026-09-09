@@ -1,4 +1,4 @@
-unit Unit1;
+﻿unit Unit1;
 
 interface
 
@@ -26,7 +26,7 @@ uses
   Vcl.OleCtrls,
   SHDocVw,
   View.WebCharts,
-  MidasLib;
+  MidasLib, WebView2.WindowParent;
 
 type
   TForm1 = class(TForm)
@@ -173,9 +173,9 @@ type
     SplitMain: TSplitView;
     SplitTable: TSplitView;
     Timer1: TTimer;
-    WebBrowser1: TWebBrowser;
     WebCharts1: TWebCharts;
     WebCharts2: TWebCharts;
+    WebView2WindowParent1: TWebView2WindowParent;
     procedure actBtnBootstrapAlertsExecute(Sender: TObject);
     procedure actBtnBootstrapButtonsExecute(Sender: TObject);
     procedure actBtnBootstrapCardsExecute(Sender: TObject);
@@ -308,7 +308,7 @@ begin
         .Dark
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -435,7 +435,7 @@ begin
       .&End
       .CallbackLink('disabled', 'ShowButtons')
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -467,7 +467,7 @@ begin
         .DataSet(ClientDataSet5)
       .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Generated;
 end;
 
@@ -779,7 +779,7 @@ begin
         .HTML
        )
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -809,7 +809,7 @@ begin
         .DataSet(ClientDataSet6)
       .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Generated;
 end;
 
@@ -830,7 +830,7 @@ begin
       .Title('T�tulo')
       .Description('Descri��o')
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -918,7 +918,7 @@ begin
       .&End
     .&End
     .Jumpline
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -1055,7 +1055,7 @@ begin
         .Value('20')
       .&end
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1096,7 +1096,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -1138,7 +1138,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1190,7 +1190,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1233,7 +1233,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1277,7 +1277,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1328,7 +1328,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1369,7 +1369,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1433,7 +1433,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1478,7 +1478,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1499,7 +1499,7 @@ begin
       .DataPercent('73')
       .Animate('1000')
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1529,7 +1529,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1571,7 +1571,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1627,7 +1627,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 
 end;
@@ -1660,7 +1660,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -1828,7 +1828,7 @@ begin
         .DataSet(ClientDataSet5)
       .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -2056,7 +2056,7 @@ begin
         .&End
       .&End
 //
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Generated;
 end;
 
@@ -2250,7 +2250,7 @@ begin
             '</div>')
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -2410,7 +2410,7 @@ begin
           )
         .&End
       .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -2622,7 +2622,7 @@ begin
     .Add('</div>')
     .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Generated;
 end;
 
@@ -2697,7 +2697,7 @@ begin
           .&End
         .&End
       .&End
-      .WebBrowser(WebBrowser1)
+      .WebBrowser(WebView2WindowParent1)
       .CallbackJS
         .ClassProvider(Self)
       .&End
@@ -2730,7 +2730,7 @@ begin
         .DataSet(ClientDataSet7)
       .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -2831,7 +2831,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .CallbackJS
     .ClassProvider(Self)
   .&End
@@ -2867,7 +2867,7 @@ begin
         .Columns(['cep','logradouro','complemento','bairro','localidade','uf','ibge','gia'])
       .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Generated;
 end;
 
@@ -2941,14 +2941,14 @@ procedure TForm1.PivotConfigLoad;
 begin
   if not FPivotConfig.IsEmpty then
     WebCharts1.ContinuosProject
-      .WebBrowser(WebBrowser1)
+      .WebBrowser(WebView2WindowParent1)
       .PivotTable.LoadConfig(FPivotConfig);
 end;
 
 procedure TForm1.PivotConfigSave;
 begin
   FPivotConfig := WebCharts1.ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .PivotTable.SaveConfig;
   ShowMessage(FPivotConfig);
 end;
@@ -2956,14 +2956,14 @@ end;
 procedure TForm1.PivotHideUI;
 begin
   WebCharts1.ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .PivotTable.HideUI;
 end;
 
 procedure TForm1.PivotShowUI;
 begin
   WebCharts1.ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .PivotTable.ShowUI;
 end;
 
@@ -3181,7 +3181,7 @@ begin
         )
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -3208,7 +3208,7 @@ begin
           .&End
         .&End
       .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -3240,7 +3240,7 @@ begin
 
   WebCharts1
     .ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Charts
       ._ChartType(line)
         .Attributes

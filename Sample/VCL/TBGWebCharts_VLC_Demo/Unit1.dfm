@@ -451,19 +451,17 @@ object Form1: TForm1
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 3
-    object WebBrowser1: TWebBrowser
+    object WebView2WindowParent1: TWebView2WindowParent
       Left = 0
       Top = 0
       Width = 995
       Height = 800
       Align = alClient
       TabOrder = 0
-      ControlData = {
-        4C00000045520000254200000000000000000000000000000000000000000000
-        000000004C000000000000000000000001000000E0D057007335CF11AE690800
-        2B2E126208000000000000004C0000000114020000000000C000000000000046
-        8000000000000000000000000000000000000000000000000000000000000000
-        00000000000000000100000000000000000000000000000000000000}
+      ExplicitLeft = 352
+      ExplicitTop = 584
+      ExplicitWidth = 100
+      ExplicitHeight = 41
     end
   end
   object SplitCharts: TSplitView
@@ -23980,6 +23978,7 @@ object Form1: TForm1
     Top = 256
   end
   object Timer1: TTimer
+    Enabled = False
     OnTimer = Timer1Timer
     Left = 978
     Top = 688
@@ -24134,7 +24133,7 @@ object Form1: TForm1
     Top = 313
   end
   object WebCharts1: TWebCharts
-    Left = 674
+    Left = 658
     Top = 536
   end
   object WebCharts2: TWebCharts

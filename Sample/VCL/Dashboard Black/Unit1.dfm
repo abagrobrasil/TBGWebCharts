@@ -25,8 +25,8 @@ object Form1: TForm1
     Color = 2040615
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 1082
-    ExplicitHeight = 665
+    ExplicitWidth = 1111
+    ExplicitHeight = 626
     object Panel2: TPanel
       Left = 0
       Top = 0
@@ -37,7 +37,7 @@ object Form1: TForm1
       Color = 1448220
       ParentBackground = False
       TabOrder = 0
-      ExplicitHeight = 665
+      ExplicitHeight = 626
     end
     object Panel3: TPanel
       Left = 73
@@ -47,14 +47,17 @@ object Form1: TForm1
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 79
-      ExplicitWidth = 1009
-      ExplicitHeight = 665
+      ExplicitWidth = 1038
+      ExplicitHeight = 626
       object WebView2WindowParent1: TWebView2WindowParent
         Left = 0
         Top = 0
-        Width = 960
-        Height = 665
+        Width = 1042
+        Height = 627
+        Align = alClient
+        TabOrder = 0
+        ExplicitWidth = 960
+        ExplicitHeight = 665
       end
     end
   end

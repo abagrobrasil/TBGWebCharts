@@ -27,14 +27,15 @@ uses
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
   View.WebCharts,
-  SHDocVw;
+  SHDocVw, WebView2.WindowParent, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
     Button1: TButton;
     Edit1: TEdit;
-    WebBrowser1: TWebBrowser;
     WebCharts1: TWebCharts;
+    Panel1: TPanel;
+    WebView2WindowParent1: TWebView2WindowParent;
     procedure Button1Click(Sender: TObject);
   strict private
     procedure PreencherDataSet(const MemTable: TFDMemTable);
@@ -79,7 +80,7 @@ begin
 
     ChartsConfig.Name('G1').&End.&End;
     ModelHTML
-      .WebBrowser(WebBrowser1)
+      .WebBrowser(WebView2WindowParent1)
       .Generated;
   finally
     ListMemTable.Free;

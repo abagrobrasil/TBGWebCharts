@@ -107,21 +107,21 @@ begin
             ._Div
               .ColSpan(4)
               .Add('<span style="font-size:32px; color:#50cc89">' +
-                   '$1,002.24' +
+                   'R$ 1.002,24' +
                    '<span>' +
                    '<p style="font-size:16px; color:#a6a7aa">Tax deduction</p>')
             .&End
             ._Div
               .ColSpan(4)
               .Add('<span style="font-size:32px; color:#ff8801">' +
-                   '$2,075' +
+                   'R$ 2.075,00' +
                    '<span>' +
                    '<p style="font-size:16px; color:#a6a7aa">Miles driven</p>')
             .&End
             ._Div
               .ColSpan(4)
               .Add('<span style="font-size:32px; color:#29a0fe">' +
-                   '$1,856' +
+                   'R$ 1.856,00' +
                    '<span>' +
                    '<p style="font-size:16px; color:#a6a7aa">Business miles</p>')
             .&End

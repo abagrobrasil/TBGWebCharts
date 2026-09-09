@@ -64,6 +64,10 @@ __history/
 __recovery/
 *.~*
 
+# Delphi IDE build output folders (DCC_DcuOutput/DCC_ExeOutput, e.g. .\Win32\Debug)
+Win32/
+Win64/
+
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
 readme2.md

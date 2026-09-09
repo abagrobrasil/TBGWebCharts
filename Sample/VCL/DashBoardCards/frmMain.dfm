@@ -19,23 +19,19 @@ object Form6: TForm6
     Height = 287
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 488
-    ExplicitHeight = 278
-    object WebBrowser1: TWebBrowser
+    ExplicitWidth = 490
+    ExplicitHeight = 286
+    object WebView2WindowParent1: TWebView2WindowParent
       Left = 1
       Top = 1
       Width = 492
       Height = 285
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 486
-      ExplicitHeight = 276
-      ControlData = {
-        4C000000AE280000911700000000000000000000000000000000000000000000
-        000000004C000000000000000000000001000000E0D057007335CF11AE690800
-        2B2E126208000000000000004C0000000114020000000000C000000000000046
-        8000000000000000000000000000000000000000000000000000000000000000
-        00000000000000000100000000000000000000000000000000000000}
+      ExplicitLeft = 336
+      ExplicitTop = 72
+      ExplicitWidth = 100
+      ExplicitHeight = 41
     end
   end
   object Panel2: TPanel
@@ -45,8 +41,8 @@ object Form6: TForm6
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 278
-    ExplicitWidth = 488
+    ExplicitTop = 286
+    ExplicitWidth = 490
     object Button1: TButton
       Left = 1
       Top = 1
@@ -75,7 +71,7 @@ object Form6: TForm6
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitWidth = 182
+      ExplicitWidth = 184
       object Button4: TButton
         Left = 0
         Top = 0

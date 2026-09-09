@@ -285,6 +285,7 @@ object Form2: TForm2
             Size.Width = 873.000000000000000000
             Size.Height = 701.000000000000000000
             Size.PlatformDefault = False
+            WindowsEngine = EdgeIfAvailable
           end
         end
         object TabItem2: TTabItem
@@ -357,12 +358,18 @@ object Form2: TForm2
               TabOrder = 0
               RowCount = 12
               Viewport.Width = 869.000000000000000000
-              Viewport.Height = 570.000000000000000000
+              Viewport.Height = 554.000000000000000000
             end
           end
         end
       end
     end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    OnTimer = Timer1Timer
+    Left = 897
+    Top = 667
   end
   object ClientDataSet1: TClientDataSet
     PersistDataPacket.Data = {
@@ -21967,9 +21974,10 @@ object Form2: TForm2
     Left = 497
     Top = 314
   end
-  object Timer1: TTimer
-    OnTimer = Timer1Timer
-    Left = 985
-    Top = 667
+  object ParamsAdapter1: TParamsAdapter
+    Active = False
+    AutoPost = False
+    Left = 1000
+    Top = 680
   end
 end

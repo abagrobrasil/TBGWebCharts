@@ -16,7 +16,7 @@ uses
   Vcl.OleCtrls,
   Vcl.ExtCtrls,
   SHDocVw,
-  View.WebCharts;
+  View.WebCharts, WebView2.WindowParent;
 
 type
   TForm7 = class(TForm)
@@ -28,8 +28,8 @@ type
     Button6: TButton;
     Panel1: TPanel;
     Panel2: TPanel;
-    WebBrowser1: TWebBrowser;
     WebCharts1: TWebCharts;
+    WebView2WindowParent1: TWebView2WindowParent;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -92,7 +92,7 @@ begin
           .Content('Hello World!\nHello World!')
         .&End
       .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Generated;
   finally
     imagem.Free;
@@ -103,7 +103,7 @@ procedure TForm7.Button2Click(Sender: TObject);
 begin
   WebCharts1
   .ContinuosProject
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
     .RichTextEditor
     .SaveContent(SaveContent);
 
@@ -113,7 +113,7 @@ procedure TForm7.Button3Click(Sender: TObject);
 begin
   WebCharts1
   .ContinuosProject
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
     .RichTextEditor
     .SaveContentText(SaveRichText);
 end;
@@ -122,7 +122,7 @@ procedure TForm7.Button4Click(Sender: TObject);
 begin
   WebCharts1
   .ContinuosProject
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
     .RichTextEditor
     .SaveContentHtml(SaveRichText);
 end;
@@ -131,7 +131,7 @@ procedure TForm7.Button5Click(Sender: TObject);
 begin
   WebCharts1
   .ContinuosProject
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Print;
 end;
 
@@ -139,7 +139,7 @@ procedure TForm7.Button6Click(Sender: TObject);
 begin
   WebCharts1
   .ContinuosProject
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
     .RichTextEditor
     .LoadContent(FContent);
 end;

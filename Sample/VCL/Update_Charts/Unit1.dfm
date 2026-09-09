@@ -12,29 +12,15 @@ object Form13: TForm13
   Font.Style = []
   OnCreate = FormCreate
   TextHeight = 13
-  object WebBrowser1: TWebBrowser
-    Left = 0
-    Top = 0
-    Width = 629
-    Height = 340
-    Align = alClient
-    TabOrder = 0
-    ControlData = {
-      4C000000023400001D1C00000000000000000000000000000000000000000000
-      000000004C000000000000000000000001000000E0D057007335CF11AE690800
-      2B2E126208000000000000004C0000000114020000000000C000000000000046
-      8000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000100000000000000000000000000000000000000}
-  end
   object Panel1: TPanel
     Left = 0
     Top = 340
     Width = 629
     Height = 41
     Align = alBottom
-    TabOrder = 1
-    ExplicitTop = 331
-    ExplicitWidth = 623
+    TabOrder = 0
+    ExplicitTop = 339
+    ExplicitWidth = 625
     object Button1: TButton
       Left = 1
       Top = 1
@@ -55,6 +41,18 @@ object Form13: TForm13
       TabOrder = 1
       OnClick = Button2Click
     end
+  end
+  object WebView2WindowParent1: TWebView2WindowParent
+    Left = 0
+    Top = 0
+    Width = 629
+    Height = 340
+    Align = alClient
+    TabOrder = 1
+    ExplicitLeft = 160
+    ExplicitTop = 96
+    ExplicitWidth = 100
+    ExplicitHeight = 41
   end
   object WebCharts1: TWebCharts
     Left = 512

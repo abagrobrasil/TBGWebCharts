@@ -10,31 +10,14 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  DesignSize = (
-    954
-    595)
   TextHeight = 13
-  object WebBrowser1: TWebBrowser
-    Left = 135
-    Top = 8
-    Width = 1032
-    Height = 751
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    TabOrder = 0
-    ControlData = {
-      4C00000054550000183E00000000000000000000000000000000000000000000
-      000000004C000000000000000000000001000000E0D057007335CF11AE690800
-      2B2E126208000000000000004C0000000114020000000000C000000000000046
-      8000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000100000000000000000000000000000000000000}
-  end
   object Button1: TButton
     Left = 8
     Top = 43
     Width = 121
     Height = 25
     Caption = 'Gerar'
-    TabOrder = 1
+    TabOrder = 0
     OnClick = Button1Click
   end
   object Edit1: TEdit
@@ -42,8 +25,29 @@ object Form1: TForm1
     Top = 16
     Width = 121
     Height = 21
-    TabOrder = 2
+    TabOrder = 1
     Text = '5'
+  end
+  object Panel1: TPanel
+    Left = 135
+    Top = 0
+    Width = 819
+    Height = 595
+    Align = alRight
+    Caption = 'Panel1'
+    TabOrder = 2
+    object WebView2WindowParent1: TWebView2WindowParent
+      Left = 1
+      Top = 1
+      Width = 817
+      Height = 593
+      Align = alClient
+      TabOrder = 0
+      ExplicitLeft = 368
+      ExplicitTop = 240
+      ExplicitWidth = 100
+      ExplicitHeight = 41
+    end
   end
   object WebCharts1: TWebCharts
     Left = 56

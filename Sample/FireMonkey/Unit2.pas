@@ -1,9 +1,6 @@
 unit Unit2;
-
 interface
-
 {$DEFINE HAS_FMX}
-
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, System.Rtti,
@@ -12,8 +9,7 @@ uses
   FMX.ListBox, Fmx.Bind.Navigator, Data.Bind.Components, Data.Bind.Grid,
   Data.Bind.DBScope, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Grid,
   Data.DB, Datasnap.DBClient, FMX.WebBrowser, FMX.TabControl, FMX.Objects,
-  FMX.Layouts, View.WebCharts;
-
+  FMX.Layouts, View.WebCharts, Data.Bind.ObjectScope, Data.Bind.DBXScope;
 type
   TForm2 = class(TForm)
     Layout1: TLayout;
@@ -77,6 +73,7 @@ type
     ClientDataSetReal1: TClientDataSet;
     ClientDataSetReal2: TClientDataSet;
     Timer1: TTimer;
+    ParamsAdapter1: TParamsAdapter;
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
@@ -103,22 +100,18 @@ type
   public
     { Public declarations }
   end;
-
 var
   Form2: TForm2;
-
 implementation
-
 uses
   Charts.Types;
-
 {$R *.fmx}
-
 
 procedure TForm2.btnBarsLabelClick(Sender: TObject);
 begin
   TabControl1.TabIndex := 0;
   WebCharts1
+  .CDN(true)
   .NewProject
     .Rows
       .Title
@@ -153,7 +146,6 @@ begin
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.btnSemiCirculeClick(Sender: TObject);
 begin
   TabControl1.TabIndex := 0;
@@ -184,7 +176,6 @@ begin
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.Button1Click(Sender: TObject);
 begin
   case ComboBox1.ItemIndex of
@@ -197,31 +188,23 @@ begin
     6 : BindSourceDB1.DataSet := ClientDataSet7;
   end;
 end;
-
 procedure TForm2.FormCreate(Sender: TObject);
 begin
   ClientDataSet1.LoadFromFile('..\VCL\Data\CDSChats.xml');
   ClientDataSet1.Open;
-
   ClientDataSet2.LoadFromFile('..\VCL\Data\CDSChats2.xml');
   ClientDataSet2.Open;
-
   ClientDataSet3.LoadFromFile('..\VCL\Data\CDSChats3.xml');
   ClientDataSet3.Open;
-
   ClientDataSet4.LoadFromFile('..\VCL\Data\CDSChats4.xml');
   ClientDataSet4.Open;
-
   ClientDataSet5.LoadFromFile('..\VCL\Data\customer.xml');
   ClientDataSet5.Open;
-
   ClientDataSet6.LoadFromFile('..\VCL\Data\clients.xml');
   ClientDataSet6.Open;
-
   ClientDataSet7.LoadFromFile('..\VCL\Data\clients.xml');
   ClientDataSet7.Open;
 end;
-
 procedure TForm2.SpeedButton10Click(Sender: TObject);
 begin
   TabControl1.TabIndex := 0;
@@ -242,7 +225,6 @@ begin
     .WebBrowser(WebBrowser1)
     .Generated;
 end;
-
 procedure TForm2.SpeedButton11Click(Sender: TObject);
 begin
   TabControl1.TabIndex := 0;
@@ -261,7 +243,6 @@ begin
     .WebBrowser(WebBrowser1)
     .Generated;
 end;
-
 procedure TForm2.SpeedButton12Click(Sender: TObject);
 begin
   if not FPivotConfig.IsEmpty then
@@ -269,12 +250,10 @@ begin
     .WebBrowser(WebBrowser1)
     .PivotTable.LoadConfig(FPivotConfig);
 end;
-
 procedure TForm2.SpeedButton13Click(Sender: TObject);
 begin
   TabControl1.TabIndex := 1;
 end;
-
 procedure TForm2.SpeedButton14Click(Sender: TObject);
 begin
   TabControl1.TabIndex := 0;
@@ -292,7 +271,6 @@ begin
     .WebBrowser(WebBrowser1)
     .Generated;
 end;
-
 procedure TForm2.SpeedButton15Click(Sender: TObject);
 begin
   FPivotConfig := WebCharts1.ContinuosProject
@@ -300,7 +278,6 @@ begin
     .PivotTable.SaveConfig;
   ShowMessage(FPivotConfig);
 end;
-
 procedure TForm2.SpeedButton1Click(Sender: TObject);
 begin
   TabControl1.TabIndex := 0;
@@ -340,7 +317,6 @@ begin
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.SpeedButton2Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -389,7 +365,6 @@ WebCharts1
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.SpeedButton3Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -425,7 +400,6 @@ TabControl1.TabIndex := 0;
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.SpeedButton4Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -455,7 +429,6 @@ TabControl1.TabIndex := 0;
               .BorderColor('30,182,203')
               .Fill(False)
             .&End
-
           .&End
         .&End
       .&End
@@ -489,7 +462,6 @@ TabControl1.TabIndex := 0;
     .WebBrowser(WebBrowser1)
     .Generated;
 end;
-
 procedure TForm2.SpeedButton5Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -565,7 +537,6 @@ TabControl1.TabIndex := 0;
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.SpeedButton6Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -591,7 +562,6 @@ TabControl1.TabIndex := 0;
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.SpeedButton7Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -621,7 +591,6 @@ TabControl1.TabIndex := 0;
   .WebBrowser(WebBrowser1)
   .Generated;
 end;
-
 procedure TForm2.SpeedButton8Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -634,10 +603,8 @@ TabControl1.TabIndex := 0;
           .&End
         .&End
       .&End
-
       .Jumpline
       .Jumpline
-
       .Rows
         .Title
           .Configuracoes
@@ -645,9 +612,7 @@ TabControl1.TabIndex := 0;
           .&End
         .&End
       .&End
-
       .Jumpline
-
       .Charts
         ._ChartType(bar)
           .Attributes
@@ -665,9 +630,7 @@ TabControl1.TabIndex := 0;
         .&End
       .&End
 
-
       .Jumpline
-
       .Rows
         .Title
           .Configuracoes
@@ -676,10 +639,7 @@ TabControl1.TabIndex := 0;
         .&End
       .&End
 
-
-
       .Rows
-
         .Tag
           .Add(
             WebCharts1
@@ -704,7 +664,6 @@ TabControl1.TabIndex := 0;
               .HTML
           )
         .&End
-
         .Tag
           .Add(
             WebCharts1
@@ -729,7 +688,6 @@ TabControl1.TabIndex := 0;
               .HTML
           )
         .&End
-
         .Tag
           .Add(
             WebCharts1
@@ -808,11 +766,9 @@ TabControl1.TabIndex := 0;
         .&End
       .&End
 
-
     .WebBrowser(WebBrowser1)
     .Generated;
 end;
-
 procedure TForm2.SpeedButton9Click(Sender: TObject);
 begin
 TabControl1.TabIndex := 0;
@@ -820,7 +776,6 @@ TabControl1.TabIndex := 0;
     .AddResource('<link href="css/green.css" rel="stylesheet">')
     .AddResource('<link href="css/custom.min.css" rel="stylesheet">')
     .NewProject
-
       //Criando uma Linha com 6 Colunas e Adicionando conteudo HTML em cada uma
       //dessas colunas
       .Rows
@@ -885,13 +840,10 @@ TabControl1.TabIndex := 0;
                '</span> ')
         .&End
       .&End
-
       //Pulando Linha
       .Jumpline
-
       //Adicionando uma nova linha com um gráfico LineStack e Barras Horizontal
       .Rows
-
         //Adicionando Grafico Line
         .Tag
           .Add(
@@ -954,7 +906,6 @@ TabControl1.TabIndex := 0;
                 .HTML
           )
         .&End
-
         //Adicionando Grafico Barras Horizontal
         .Tag
           .Add(
@@ -984,7 +935,6 @@ TabControl1.TabIndex := 0;
           )
         .&End
       .&End
-
       .Rows
         .Tag
           .Add(
@@ -1013,7 +963,6 @@ TabControl1.TabIndex := 0;
                 .HTML
           )
         .&End
-
         .Tag
           .Add(
             WebCharts1
@@ -1041,7 +990,6 @@ TabControl1.TabIndex := 0;
                 .HTML
           )
         .&End
-
         .Tag
           .Add(
             WebCharts1
@@ -1070,14 +1018,11 @@ TabControl1.TabIndex := 0;
           )
         .&End
 
-
       .&End
-
 
     .WebBrowser(WebBrowser1)
     .Generated;
 end;
-
 procedure TForm2.Timer1Timer(Sender: TObject);
 begin
   ClientDataSetReal1.AppendRecord(['', IntToStr(Random(200)), '']);

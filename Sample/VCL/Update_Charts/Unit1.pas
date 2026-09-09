@@ -16,7 +16,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.OleCtrls,
   View.WebCharts,
-  SHDocVw;
+  SHDocVw, WebView2.WindowParent;
 
 type
   TForm13 = class(TForm)
@@ -29,8 +29,8 @@ type
     ClientDataSet2: TClientDataSet;
     ClientDataSet3: TClientDataSet;
     Panel1: TPanel;
-    WebBrowser1: TWebBrowser;
     WebCharts1: TWebCharts;
+    WebView2WindowParent1: TWebView2WindowParent;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -84,7 +84,7 @@ begin
         .&End
       .&End
     .&End
-  .WebBrowser(WebBrowser1)
+  .WebBrowser(WebView2WindowParent1)
   .Generated;
 end;
 
@@ -104,7 +104,7 @@ begin
 
   WebCharts1
   .ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .Charts
       ._ChartType(bar)
         .Attributes

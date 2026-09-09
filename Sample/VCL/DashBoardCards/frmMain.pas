@@ -18,7 +18,7 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   View.WebCharts,
-  SHDocVw;
+  SHDocVw, WebView2.WindowParent;
 
 type
   TForm6 = class(TForm)
@@ -34,8 +34,8 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
-    WebBrowser1: TWebBrowser;
     WebCharts1: TWebCharts;
+    WebView2WindowParent1: TWebView2WindowParent;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -300,7 +300,7 @@ begin
         )
       .&End
     .&End
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .CallbackJS
       .ClassProvider(Self)
     .&End
@@ -311,7 +311,7 @@ procedure TForm6.Button2Click(Sender: TObject);
 begin
   Webcharts1
     .ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .DOMElement
       .Id('Test')
       .Html(GenerateCard)
@@ -322,7 +322,7 @@ procedure TForm6.Button4Click(Sender: TObject);
 begin
   WebCharts1
     .ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
     .LiquiFillGauge
       .Name('fillgauge2')
       .Value(Random(100).ToString)
@@ -500,7 +500,7 @@ begin
 
   Webcharts1
     .ContinuosProject
-    .WebBrowser(WebBrowser1)
+    .WebBrowser(WebView2WindowParent1)
       .Charts
         ._ChartType(bar)
           .Attributes
